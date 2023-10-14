@@ -40,7 +40,7 @@ const ContactUs = () => {
             </Box>
 
             <form>
-              <Box marginTop="2%">
+              <Box marginTop="5%">
                 <Text
                   htmlFor="username"
                   marginBottom="10px"
@@ -107,10 +107,8 @@ const ContactUs = () => {
                     height="200px"
                     paddingLeft={{ base: "10px", md: "35px" }}
                     type="text"
-                    placeholder="Enter password"
-                    id="password"
+                    id="text"
                     required
-                    aria-describedby="pwdnote"
                   />
                 </InputGroup>
               </Box>
@@ -130,13 +128,6 @@ const ContactUs = () => {
                 Submit
               </Button>
             </form>
-
-            <Text marginTop="10px" fontSize="15px">
-              Already have an account?
-              <Link to="login" className="login">
-                Login
-              </Link>
-            </Text>
           </Box>
           <Box
             backgroundSize="cover"
