@@ -127,7 +127,7 @@ const ContactUs = () => {
                   color: "white",
                 }}
               >
-                Create my Account
+                Submit
               </Button>
             </form>
 
