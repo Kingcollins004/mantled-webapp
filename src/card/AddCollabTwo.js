@@ -1,0 +1,215 @@
+import React, { useState } from "react";
+import {
+  Box,
+  Flex,
+  Text,
+  Image,
+  Button,
+  ModalHeader,
+  Spacer,
+} from "@chakra-ui/react";
+import backArrow from "../assets/svg/back-arrow.svg";
+import building from "../assets/svg/buildingIcon.svg";
+import SuccessCard from "./SuccessCard";
+
+const AddCollabTwo = (props) => {
+  const [allProperties, setAllProperties] = useState(false);
+
+  const [displayModal, setDisplayModal] = useState(true);
+  const [belowList, setBelowList] = useState(true);
+
+  const setList = () => {
+    if (allProperties === true) {
+      setBelowList(true);
+    } else {
+      setBelowList(false);
+    }
+  };
+
+  const handleCheckboxChange = (event) => {
+    setAllProperties(event.target.checked);
+    console.log(event.target.value);
+  };
+
+  const handleCheckboxChangeTwo = (event) => {
+    console.log(event.target.value);
+  };
+  const handleCheckboxChangeThree = (event) => {
+    console.log(event.target.value);
+  };
+  const handleCheckboxChangeFour = (event) => {
+    console.log(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setDisplayModal(false);
+  };
+
+  return (
+    <div>
+      {displayModal ? (
+        <div>
+          <ModalHeader marginTop="2%" fontSize="18px">
+            <Flex
+              padding={{ base: "0 0", md: "0 12%" }}
+              width="100%"
+              alignItems="center"
+              marginTop="2%"
+            >
+              <Image
+                onClick={() => {
+                  props.goBack();
+                }}
+                width="4%"
+                marginRight={{ base: "2%", md: "3%" }}
+                marginTop="0px"
+                src={backArrow}
+              />
+              <Text fontWeight="500" fontSize={{ base: "13px", md: "18px" }}>
+                Kindly set the permission parameters
+              </Text>
+            </Flex>
+          </ModalHeader>
+
+          <Box height="500px" padding={{ base: "2% 2%", md: "2% 15%" }}>
+            <Flex
+              marginTop="8%"
+              padding="1% 3%"
+              border="0.5px solid #848484"
+              borderRadius="10px"
+            >
+              <Text fontSize="14px" textAlign="left" margin="2% 0%">
+                Allow access to all properties
+              </Text>
+              <Spacer />
+              <input
+                type="checkbox"
+                checked={allProperties}
+                onChange={handleCheckboxChange}
+                onClick={setList}
+                value=" Allow access to all properties"
+              />
+            </Flex>
+
+            {belowList ? (
+              <div>
+                <Box borderTop="0.5px solid #F7F7F7" marginTop="10%">
+                  <Text
+                    color="#848484"
+                    fontSize="12px"
+                    textAlign="left"
+                    margin="3% 0%"
+                  >
+                    SELECT ASSETS AVAILABLE TO COLLABORATORS
+                  </Text>
+
+                  <Flex
+                    marginTop="5%"
+                    padding="1% 2%"
+                    border="0.5px solid #848484"
+                    borderRadius="10px"
+                  >
+                    <Image marginRight="2%" src={building} />
+                    <Text fontSize="14px" textAlign="left" margin="2% 0%">
+                      Liberty Estate, Laderin, Abeokuta, Ogun State
+                    </Text>
+                    <Spacer />
+                    <input
+                      type="checkbox"
+                      // checked={allProperties}
+                      onChange={handleCheckboxChangeTwo}
+                      value=" Liberty Estate, Laderin, Abeokuta, Ogun State"
+                    />
+                  </Flex>
+                  <Flex
+                    marginTop="5%"
+                    padding="1% 2%"
+                    border="0.5px solid #848484"
+                    borderRadius="10px"
+                  >
+                    <Image marginRight="2%" src={building} />
+                    <Text fontSize="14px" textAlign="left" margin="2% 0%">
+                      Challenges Mansion, Ibadan, Oyo State
+                    </Text>
+                    <Spacer />
+                    <input
+                      type="checkbox"
+                      // checked={allProperties}
+                      onChange={handleCheckboxChangeThree}
+                      value="Challenges Mansion, Ibadan, Oyo State"
+                    />
+                  </Flex>
+                  <Flex
+                    marginTop="5%"
+                    padding="1% 2%"
+                    border="0.5px solid #848484"
+                    borderRadius="10px"
+                  >
+                    <Image marginRight="2%" src={building} />
+                    <Text fontSize="14px" textAlign="left" margin="2% 0%">
+                      Phat Homes, Lekki Phase 2, Lagos State
+                    </Text>
+                    <Spacer />
+                    <input
+                      type="checkbox"
+                      // checked={allProperties}
+                      onChange={handleCheckboxChangeFour}
+                      value="Phat Homes, Lekki Phase 2, Lagos State"
+                    />
+                  </Flex>
+                </Box>
+                <Box
+                  marginBottom="3%"
+                  marginTop="6%"
+                  width="100%"
+                  textAlign="right"
+                >
+                  <Button
+                    color="white"
+                    marginRight="3%"
+                    fontSize="14px"
+                    padding="5%"
+                    backgroundColor="#7800F0"
+                    onClick={handleSubmit}
+                    width="100%"
+                    borderRadius="10px"
+                  >
+                    Proceed
+                  </Button>
+                </Box>
+              </div>
+            ) : (
+              <Box
+                marginBottom="3%"
+                marginTop="6%"
+                width="100%"
+                textAlign="right"
+                // display={selectedOption ? "block" : "none"}
+              >
+                <Button
+                  color="white"
+                  marginRight="3%"
+                  fontSize="14px"
+                  padding="5%"
+                  backgroundColor="#7800F0"
+                  onClick={handleSubmit}
+                  width="100%"
+                  borderRadius="10px"
+                >
+                  Proceed
+                </Button>
+              </Box>
+            )}
+          </Box>
+        </div>
+      ) : (
+        <div>
+          <SuccessCard text="An invite link has been sent to the email address to join in as a collaborator to your asset" />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AddCollabTwo;
