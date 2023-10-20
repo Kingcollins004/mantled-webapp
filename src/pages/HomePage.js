@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "../components/Header";
 import {
   Box,
@@ -99,10 +99,16 @@ const HomePage = () => {
         <Flex
           flexDirection="column"
           alignItems="center"
-          marginY={{ base: "3%" }}
+          marginY={{ base: "3%", md: "1%" }}
         >
           <Image width="20%" src={swift} />
-          <Text>Swift Upload</Text>
+          <Text
+            fontWeight="bold"
+            marginY={{ base: "1%", md: "2%" }}
+            fontSize={{ base: "16px", md: "26px" }}
+          >
+            Swift Upload
+          </Text>
           <Text marginX="15%" textAlign="center">
             Seamlessly upload your assets along with relevant documents
             instantly
@@ -112,10 +118,16 @@ const HomePage = () => {
         <Flex
           flexDirection="column"
           alignItems="center"
-          marginY={{ base: "3%" }}
+          marginY={{ base: "3%", md: "1%" }}
         >
-          <Image width="20%" src={security} />
-          <Text>Security</Text>
+          <Image width={{ base: "20%", md: "16%" }} src={security} />
+          <Text
+            fontWeight="bold"
+            marginY={{ base: "1%", md: "2%" }}
+            fontSize={{ base: "16px", md: "26px" }}
+          >
+            Security
+          </Text>
           <Text marginX="15%" textAlign="center">
             Your Virtual safety deposit box is securely encrypted with access to
             only authorized individuals
@@ -125,17 +137,23 @@ const HomePage = () => {
         <Flex
           flexDirection="column"
           alignItems="center"
-          marginY={{ base: "3%" }}
+          marginY={{ base: "3%", md: "1%" }}
         >
           <Image width="20%" src={like} />
-          <Text>Convenient</Text>
+          <Text
+            fontWeight="bold"
+            marginY={{ base: "1%", md: "2%" }}
+            fontSize={{ base: "16px", md: "26px" }}
+          >
+            Convenient
+          </Text>
           <Text marginX="15%" textAlign="center">
             Track and monitor your valuable assets in real time on any device
           </Text>
         </Flex>
       </Flex>
 
-      <Flex flexDirection={{base:"column"}}>
+      <Flex flexDirection={{ base: "column", md: "row" }}>
         <Box flex="1">
           <Image width="100%" height="70%" src={imgLeft} />
           <Image marginTop="1%" width="100%" src={imgb} />
@@ -145,15 +163,19 @@ const HomePage = () => {
           <Box
             backgroundColor="#001233"
             padding="10% 5%"
-            marginLeft={{base:"0", md:"1%"}}
+            marginLeft={{ base: "0", md: "1%" }}
             height="70%"
           >
-            <Text color="white" fontSize={{base: "20px",md:"38px"}} fontWeight="semibold">
+            <Text
+              color="white"
+              fontSize={{ base: "20px", md: "38px" }}
+              fontWeight="semibold"
+            >
               Protecting What Matters Most
             </Text>
             <Text
               color="white"
-              fontSize={{base: "16px",md:"20px"}}
+              fontSize={{ base: "16px", md: "20px" }}
               fontWeight="medium"
               marginTop="5%"
             >
@@ -179,17 +201,30 @@ const HomePage = () => {
         </Box>
       </Flex>
 
-      <Flex justifyContent="center" flexDirection={{base:"column"}} alignItems="center" padding="5% 10%">
-        <Box flex="1" marginY={{base:"15%"}} textAlign={{base: "center"}}>
-          <Text fontSize={{base: "20px",md:"48px"}} marginTop="-10%" fontWeight="bold">
+      <Flex
+        justifyContent="center"
+        flexDirection={{ base: "column", md: "row" }}
+        alignItems="center"
+        padding="5% 10%"
+      >
+        <Box
+          flex="1"
+          marginY={{ base: "15%" }}
+          textAlign={{ base: "center", md: "left" }}
+        >
+          <Text
+            fontSize={{ base: "20px", md: "48px" }}
+            marginTop="-10%"
+            fontWeight="bold"
+          >
             Download The App
           </Text>
-          <Text fontSize={{base: "16px",md:"20px"}} marginTop="5%">
+          <Text fontSize={{ base: "16px", md: "20px" }} marginTop="5%">
             Ready to take control of your assets and embrace ultimate security
             on the go? Download our app now and experience the power of our
             Digital Vault right at your fingertips.
           </Text>
-          <Flex marginTop="5%" justifyContent={{base: "center"}}>
+          <Flex marginTop="5%" justifyContent={{ base: "center", md: "left" }}>
             <Image marginRight="2%" src={appleBtn} />
             <Image src={googleBtn} />
           </Flex>
@@ -198,19 +233,32 @@ const HomePage = () => {
           <Image src={phoneGroup} />
         </Box>
       </Flex>
-      <Flex backgroundColor="#001233" flexDirection={{base:"column"}} padding="0% 10%" alignItems="center">
-        <Box flex="2" marginY={{base: "15%"}} textAlign={{base: "center"}}>
-          <Text fontSize={{base: "20px",md:"48px"}} fontWeight="bold" color="white">
+      <Flex
+        backgroundColor="#001233"
+        flexDirection={{ base: "column", md: "row" }}
+        padding="0% 10%"
+        alignItems="center"
+      >
+        <Box
+          flex="2"
+          marginY={{ base: "15%", md: "5%" }}
+          textAlign={{ base: "center", md: "left" }}
+        >
+          <Text
+            fontSize={{ base: "20px", md: "48px" }}
+            fontWeight="bold"
+            color="white"
+          >
             Put The Future In Safe Hands
           </Text>
-          <Text fontSize={{base: "16px",md:"20px"}}  color="white">
+          <Text fontSize={{ base: "16px", md: "20px" }} color="white">
             Our mission is to provide you with a fortified digital fortress,
             ensuring your valuable assets are meticulously secured and easily
             accessible whenever you need them.
           </Text>
           <Button
             color="white"
-            padding={{base:"10% 15%",md:"4% 8%"}}
+            padding={{ base: "10% 15%", md: "4% 8%" }}
             marginTop="5%"
             backgroundColor="#001233"
             border="1px solid white"
@@ -218,44 +266,60 @@ const HomePage = () => {
             Get Started
           </Button>
         </Box>
-        <Box flex="1" justifyContent={{base: "center"}} alignItems={{base: "center"}}>
+        <Box flex="1">
           <Image width="90%" height="70%" src={manImg} />
         </Box>
       </Flex>
-      <Box padding={{base: "2% 4%",md:"3% 10%"}} marginY={{base: "15%"}}>
-        <Text textAlign="right" fontSize={{base: "20px",md:"44px"}} fontWeight="bold">
+
+      <Box
+        padding={{ base: "2% 4%", md: "3% 10%" }}
+        marginY={{ base: "15%", md: "5%" }}
+      >
+        <Text
+          textAlign="right"
+          fontSize={{ base: "20px", md: "44px" }}
+          fontWeight="bold"
+        >
           Newsletter
         </Text>
         <Flex
           alignItems="center"
           border="1px solid lightgray"
-          borderRadius={{base:"0", md:"20px"}}
+          borderRadius={{ base: "0", md: "20px" }}
         >
           <Input
             padding="2% 5%"
             focusBorderColor="none"
             focusBorder="none"
             placeholder="Enter Your Email Address"
-            borderRadius={{base: "0",md:"20px 0 0 20px"}}
+            borderRadius={{ base: "0", md: "20px 0 0 20px" }}
             border="none"
-            fontSize={{base:"14px"}}
+            fontSize={{ base: "14px", md: "16px" }}
           />
           <Button
-            borderRadius={{base:"0", md:"20px"}}
+            borderRadius={{ base: "0", md: "20px" }}
             backgroundColor="#7800F0"
             color="white"
-            padding={{base:"4% 8%", md:"2.4% 5%"}}
-            fontSize={{base:"14px"}}
+            padding={{ base: "4% 8%", md: "2.4% 5%" }}
+            fontSize={{ base: "14px" }}
           >
             Subscribe Now!
           </Button>
         </Flex>
-        <Text fontSize={{base: "14px",md:"20px"}} textAlign="center" marginTop="1%">
+        <Text
+          fontSize={{ base: "14px", md: "20px" }}
+          textAlign="center"
+          marginTop="1%"
+        >
           Get Updates from us directly in your Inbox
         </Text>
-        <Flex alignItems={{base: "left",md:"center"}} flexDirection={{base:"column"}} marginTop="3%">
+        <Flex
+          alignItems={{ base: "left", md: "center" }}
+          flexDirection={{ base: "column", md:"row" }}
+          marginTop="3%"
+        >
           <Box>
-            <Image width={{base: "40%",md:"90%"}} src={logo} />
+            <Image width={{ base: "40%", md: "90%" }} src={logo} />
             <Text>Home</Text>
             <Text>Pricing</Text>
             <Text>Contact Us</Text>
@@ -263,15 +327,20 @@ const HomePage = () => {
             <Text>Get Started</Text>
           </Box>
           <Spacer />
-          <Box marginY={{base: "5%"}} textAlign={{base:"center"}}>
-            <Text fontSize={{base: "20px",md:"28px"}} fontWeight="semibold">Get the App on</Text>
-            <Flex justifyContent={{base: "center",md:"left"}} marginTop="5%">
+          <Box marginY={{ base: "5%", md:"2%" }} textAlign={{ base: "center", md: "left" }}>
+            <Text fontSize={{ base: "20px", md: "28px" }} fontWeight="semibold">
+              Get the App on
+            </Text>
+            <Flex
+              justifyContent={{ base: "center", md: "left" }}
+              marginTop="5%"
+            >
               <Image marginRight="2%" src={appleBtn} />
               <Image src={googleBtn} />
             </Flex>
           </Box>
           <Spacer />
-          <Flex justifyContent={{base: "center",md:"left"}}>
+          <Flex justifyContent={{ base: "center", md: "left" }}>
             <Image src={socialIcons} />
           </Flex>
         </Flex>

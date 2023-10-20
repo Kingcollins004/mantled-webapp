@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -16,14 +15,14 @@ import userIcon from "../assets/svg/user-icon.svg";
 import pageIdc from "../assets/svg/page-idc.svg";
 import phoneImg from "../assets/svg/phone-background.svg";
 import "../App.css";
-import { Toaster} from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const ContactUs = () => {
   return (
     <div>
       <Box width="100%">
         <Flex direction={{ base: "column", md: "row" }}>
-          <Toaster position="top-center" reverseOrder={false} />;
+          <Toaster position="top-center" reverseOrder={false} />
           <Box
             width={{ base: "100%", md: "50%" }}
             padding={{ base: "40px 20px 20px 20px", md: "40px 80px 20px 80px" }}
