@@ -15,7 +15,7 @@ const Pricing = () => {
       <Text textAlign="center" marginTop="4%" fontSize="48px" fontWeight="600">
         Our Pricing Plan
       </Text>
-      <Flex margin="3% 5%" borderRadius="24px" backgroundColor="#001233">
+      <Flex flexDirection={{base:"column"}} margin="3% 5%" borderRadius="24px" backgroundColor="#001233">
         <Box margin="2% 1%" flex="1" padding="2% 8%" color="white">
           <Text fontSize="20px">Save More</Text>
           <Text fontSize="24px" marginTop="2%" fontWeight="semibold">
@@ -45,32 +45,33 @@ const Pricing = () => {
             height="70%"
             flexDirection="column"
             justifyContent="space-around"
+            textAlign={{base:"left"}}
           >
-            <Flex>
+            <Flex marginY={{base: "3%"}} >
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Single repository for all your assets
               </Text>
             </Flex>
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Sync with all your finance and investment apps
               </Text>
             </Flex>
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Automated network calculator
               </Text>
             </Flex>
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Unlimited storage
               </Text>
             </Flex>
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Free basic legal advice
@@ -80,16 +81,17 @@ const Pricing = () => {
           <Button
             marginBottom="2%"
             bgGradient="linear(to-r, #7800F0, #00A088)"
-            padding="5% 10%"
+            padding={{base: "10% 15%" ,md:"5% 10%"}}
             color="white"
             borderRadius="4px"
+            marginY={{base: "3%"}}
           >
             Get Started
           </Button>
         </Box>
       </Flex>
 
-      <Flex margin="0 4%">
+      <Flex margin="0 4%"  flexDirection={{base: "column"}}>
         <Box
           flex="1"
           borderRadius="20px"
@@ -111,32 +113,33 @@ const Pricing = () => {
             flexDirection="column"
             justifyContent="space-around"
             margin="4% 0"
+            textAlign={{base:"left"}}
           >
-            <Flex margin="2% 0">
+            <Flex marginY={{base: "3%"}} margin="2% 0">
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
               Access to multiple templates to create your will
               </Text>
             </Flex>
-            <Flex margin="2% 0">
+            <Flex marginY={{base: "3%"}} margin="2% 0">
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
               Unlimited number of beneficiaries
               </Text>
             </Flex>
-            <Flex margin="2% 0">
+            <Flex marginY={{base: "3%"}} margin="2% 0">
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
               World Class Research Powered by Morningstar
               </Text>
             </Flex>
-            <Flex margin="2% 0">
+            <Flex marginY={{base: "3%"}} margin="2% 0">
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
               Buy Sell Hold Ratings
               </Text>
             </Flex>
-            <Flex margin="2% 0">
+            <Flex  margin="2% 0">
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
               Trove Investor Education Portal
@@ -146,9 +149,10 @@ const Pricing = () => {
           <Button
             marginBottom="2%"
             bgGradient="linear(#7800F0, #7800F0)"
-            padding="5% 10%"
+            padding={{base: "10% 15%",md:"5% 10%"}}
             color="white"
             borderRadius="4px"
+            border={{base: "1px solid white"}}
           >
             Get Started
           </Button>
@@ -171,33 +175,34 @@ const Pricing = () => {
           <Flex
             height="70%"
             flexDirection="column"
+            textAlign={{base:"left"}}
             justifyContent="space-around"
           >
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Single repository for all your assets
               </Text>
             </Flex>
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Sync with all your finance and investment apps
               </Text>
             </Flex>
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Automated network calculator
               </Text>
             </Flex>
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Unlimited storage
               </Text>
             </Flex>
-            <Flex>
+            <Flex marginY={{base: "3%"}}>
               <Image src={tickCircle} />
               <Text fontSize="18px" fontWeight="500">
                 Free basic legal advice
@@ -207,7 +212,7 @@ const Pricing = () => {
           <Button
             marginBottom="2%"
             bgGradient="linear(to-r, #7800F0, #00A088)"
-            padding="5% 10%"
+            padding={{base: "10% 15%",md:"5% 10%"}}
             color="white"
             borderRadius="4px"
           >
@@ -216,56 +221,58 @@ const Pricing = () => {
         </Box>
       </Flex>
 
-      <Box padding="3% 10%">
-        <Text textAlign="right" fontSize="44px" fontWeight="bold">
+      <Box padding={{base: "2% 4%",md:"3% 10%"}} marginY={{base: "15%"}}>
+        <Text textAlign="right" fontSize={{base: "20px",md:"44px"}} fontWeight="bold">
           Newsletter
         </Text>
         <Flex
           alignItems="center"
           border="1px solid lightgray"
-          borderRadius="20px"
+          borderRadius={{base:"0", md:"20px"}}
         >
           <Input
             padding="2% 5%"
             focusBorderColor="none"
             focusBorder="none"
             placeholder="Enter Your Email Address"
-            borderRadius="20px 0 0 20px"
+            borderRadius={{base: "0",md:"20px 0 0 20px"}}
             border="none"
+            fontSize={{base:"14px"}}
           />
           <Button
-            borderRadius="20px"
+            borderRadius={{base:"0", md:"20px"}}
             backgroundColor="#7800F0"
             color="white"
-            padding="2.4% 5%"
+            padding={{base:"4% 8%", md:"2.4% 5%"}}
+            fontSize={{base:"14px"}}
           >
             Subscribe Now!
           </Button>
         </Flex>
-        <Text fontSize="20px" textAlign="center" marginTop="1%">
+        <Text fontSize={{base: "14px",md:"20px"}} textAlign="center" marginTop="1%">
           Get Updates from us directly in your Inbox
         </Text>
-        <Flex alignItems="center" marginTop="3%">
-        <Box>
-          <Image width="90%" src={logo} />
-          <Text>Home</Text>
-          <Text>Pricing</Text>
-          <Text>Contact Us</Text>
-          <Text>Login</Text>
-          <Text>Get STarted</Text>
-        </Box>
-        <Spacer />
-        <Box>
-          <Text>Get the App on</Text>
-          <Flex marginTop="5%">
-            <Image marginRight="2%" src={appleBtn} />
-            <Image src={googleBtn} />
+        <Flex alignItems={{base: "left",md:"center"}} flexDirection={{base:"column"}} marginTop="3%">
+          <Box>
+            <Image width={{base: "40%",md:"90%"}} src={logo} />
+            <Text>Home</Text>
+            <Text>Pricing</Text>
+            <Text>Contact Us</Text>
+            <Text>Login</Text>
+            <Text>Get Started</Text>
+          </Box>
+          <Spacer />
+          <Box marginY={{base: "5%"}} textAlign={{base:"center"}}>
+            <Text fontSize={{base: "20px",md:"28px"}} fontWeight="semibold">Get the App on</Text>
+            <Flex justifyContent={{base: "center",md:"left"}} marginTop="5%">
+              <Image marginRight="2%" src={appleBtn} />
+              <Image src={googleBtn} />
+            </Flex>
+          </Box>
+          <Spacer />
+          <Flex justifyContent={{base: "center",md:"left"}}>
+            <Image src={socialIcons} />
           </Flex>
-        </Box>
-        <Spacer />
-        <Box>
-          <Image src={socialIcons}/>
-        </Box>
         </Flex>
       </Box>
     </div>

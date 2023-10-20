@@ -136,7 +136,7 @@ function GetStarted() {
     <div>
       <Box width="100%">
         <Flex direction={{ base: "column", md: "row" }}>
-          <Toaster position="top-center" reverseOrder={false} />;
+          <Toaster position="top-center" reverseOrder={false} />
           <Box
             width={{ base: "100%", md: "50%" }}
             padding={{ base: "40px 20px 20px 20px", md: "40px 80px 20px 80px" }}
