@@ -62,7 +62,7 @@ const AssetModal = () => {
                   <ModalOverlay />
                   <ModalContent
                     borderRadius="30px"
-                    width={{base:"95%", md:"45%"}}
+                    width={{ base: "95%", md: "45%" }}
                     maxW="unset"
                     textAlign="center"
                   >
@@ -72,7 +72,6 @@ const AssetModal = () => {
                   </ModalContent>
                 </Modal>
 
-                {/* <ChooseAssets isOpen={isOpen} onClose={onClose} /> */}
               </Box>
             </Flex>
             <Box maxHeight={{ md: "400px" }} scroll overflowY="auto">
@@ -106,7 +105,7 @@ const AssetModal = () => {
                   >
                     <ProgressBar progress={16} />
                   </Box>
-                  {/* <Spacer /> */}
+                 
                   <Text
                     paddingTop="2.7%"
                     marginLeft="1%"
@@ -384,9 +383,7 @@ const AssetModal = () => {
               </Box>
             </Box>
           </Box>
-          <Box
-            width={{ base: "100%", md: "50%" }}
-          >
+          <Box width={{ base: "100%", md: "50%" }}>
             <CollabModal />
           </Box>
         </Flex>

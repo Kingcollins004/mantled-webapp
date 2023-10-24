@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Drawer,
   DrawerContent,
   DrawerOverlay,
-  DrawerHeader,
   DrawerBody,
-  Stack,
-  RadioGroup,
-  Radio,
   Flex,
   Text,
   Image,
@@ -48,16 +44,16 @@ const SidebarMenuItem = ({ to, icon, text }) => (
 
 const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [placement, setPlacement] = React.useState("left");
+  const [placement] = React.useState("left");
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   return (
     <div>
       <Box
         margin="0px"
-        height={{base: "10%", md: "100vh"}}
+        height={{ base: "10%", md: "100vh" }}
         width="15vw"
-        borderRight={{base: "none", md: "1px solid lightgrey"}}
+        borderRight={{ base: "none", md: "1px solid lightgrey" }}
         overflow="hidden"
         transition="width 0.3s"
         padding="0%"

@@ -18,6 +18,7 @@ import HomePage from "./pages/HomePage";
 import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 import ContactUs from "./pages/ContactUs";
+import Settings from "./pages/Settings";
 
 function App() {
   const theme = extendTheme({
@@ -65,6 +66,7 @@ function App() {
           />
           <Route element={<Dashboard />} path="dashboard" />
           <Route element={<MyVault />} path="myvault" />
+          <Route element={<Settings />} path="settings" />
           <Route
             element={<SubscriptionPayment />}
             path="profile-registration-three-2"

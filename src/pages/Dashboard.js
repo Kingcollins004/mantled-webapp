@@ -12,11 +12,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Flex
-        width="100%"
-        height="100vh"
-        backgroundColor="#FCFCFC"
-      >
+      <Flex width="100%" height="100vh" backgroundColor="#FCFCFC">
         {isMobile ? (
           <Box width="100%" padding="2% 2% ">
             <Box width="100%">
