@@ -6,6 +6,7 @@ const AssetMoreIconPop = (onClose) => {
 
   const handleOptionClick =() => {
     setDisplayProperty(true)
+    return displayProperty
   }
   return (
     <PopoverContent

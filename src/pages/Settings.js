@@ -11,19 +11,29 @@ import People from "../assets/svg/phoneIcon.svg";
 import { useState } from "react";
 import Lawyer from "../components/Lawyer";
 import UserBeneficiary from "../components/UserBeneficiary";
+import Security from "../components/Security";
 
 const Settings = () => {
   const [lawyer, setLawyer] = useState(false);
   const [beneficiary, setBeneficiary] = useState(false);
+  const [security, setSecurity] = useState(false);
 
   const handleLawyer = () => {
     setLawyer(true);
     setBeneficiary(false);
+    setSecurity(false)
   };
 
   const handleBeneficiary = () => {
     setBeneficiary(true);
     setLawyer(false);
+    setSecurity(false)
+  };
+
+  const handleSecurity = () => {
+    setSecurity(true);
+    setLawyer(false);
+    setBeneficiary(false)
   };
 
   const renderContent = () => {
@@ -31,6 +41,8 @@ const Settings = () => {
       return <Lawyer />;
     } else if (beneficiary) {
       return <UserBeneficiary />;
+    } else if (security) {
+      return <Security />;
     } else {
       return (
         <Flex
@@ -91,7 +103,7 @@ const Settings = () => {
             <Image src={arrowIcon} />
           </Flex>
 
-          <Flex width="100%" marginY="2%" alignItems="center">
+          <Flex onClick={handleSecurity} width="100%" marginY="2%" alignItems="center">
             <Image src={shield} />
             <Box marginLeft="5%">
               <Text fontSize="20px" fontWeight="600">

@@ -116,6 +116,8 @@ button {
 }
 .user-num{
   font-weight: 600;
+  margin-left: 5px;
+  font-size: 14px;
 }
 .forTap{
   cursor: pointer;

@@ -20,10 +20,9 @@ const Collaborations = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [displayModal, setDisplayModal] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [setFilteredAssets] = useState([]);
+  const [filteredUserAssets, setFilteredUserAssets] = useState([]);
   const [assetComp, setAssetComp] = useState(false);
   const [isMobile] = useMediaQuery("(max-width: 768px)");
-
 
   const handleSwitchB = (option) => {
     setSelectedOption(option);
@@ -85,7 +84,8 @@ const Collaborations = () => {
     const filteredAssets = assets.filter((asset) =>
       asset.name.toLowerCase().includes(searchTerm)
     );
-    setFilteredAssets(filteredAssets);
+    setFilteredUserAssets(filteredAssets);
+    return filteredUserAssets;
   };
 
   const handleComp = (people) => {
@@ -107,7 +107,7 @@ const Collaborations = () => {
         </Box>
 
         <Box width="100%" padding="2% 2% ">
-        {isMobile ? (
+          {isMobile ? (
             <Box width="100%">
               <Flex width="100%" justifyContent="center" alignItems="center">
                 <Sidebar />
@@ -279,13 +279,17 @@ const Collaborations = () => {
                         <Box width="100%">
                           {people
                             .filter((asset) => {
-      if (searchTerm === "") {
-        return true; // Return true to include all assets when searchTerm is empty
-      } else if (asset.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return true; // Include assets where the name contains the searchTerm
-      }
-      return false; // Exclude assets that don't match the searchTerm
-    })
+                              if (searchTerm === "") {
+                                return true; // Return true to include all assets when searchTerm is empty
+                              } else if (
+                                asset.name
+                                  .toLowerCase()
+                                  .includes(searchTerm.toLowerCase())
+                              ) {
+                                return true; // Include assets where the name contains the searchTerm
+                              }
+                              return false; // Exclude assets that don't match the searchTerm
+                            })
                             .map((people, index) => (
                               <Flex margin="5% 0" key={index}>
                                 <Box

@@ -6,10 +6,12 @@ import avatar from "../assets/png/avatar.jpg";
 import arrowIcon from "../assets/svg/arrowIcon.svg";
 import AssetModal from "../components/AssetModal";
 import { useMediaQuery } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
-
+  const userData = useSelector((state) => state.user);
+  console.log("User Data:", userData);
   return (
     <div>
       <Flex width="100%" height="100vh" backgroundColor="#FCFCFC">
@@ -24,7 +26,7 @@ const Dashboard = () => {
                     color="#535353"
                     fontSize={{ base: "16px", md: "22px" }}
                   >
-                    Welcome Back, David Haruna
+                    Welcome Back, {userData.name}
                   </Text>
                   <Text fontSize="14px">Monthly Premium User</Text>
                 </Box>
@@ -180,13 +182,15 @@ const Dashboard = () => {
                     src={avatar}
                   />
                   <Box width="100%" marginLeft="1%">
-                    <Text
-                      fontWeight="600"
-                      color="#535353"
-                      fontSize={{ base: "16px", md: "22px" }}
-                    >
-                      Welcome Back, David Haruna
-                    </Text>
+                    {userData && (
+                      <Text
+                        fontWeight="600"
+                        color="#535353"
+                        fontSize={{ base: "16px", md: "22px" }}
+                      >
+                        Welcome Back, {userData.name}
+                      </Text>
+                    )}
                     <Text fontSize="14px">Monthly Premium User</Text>
                   </Box>
                 </Flex>

@@ -24,7 +24,10 @@ const Lawyer = () => {
   const [email] = useState("thispeople@gmail.com");
   const [number] = useState("+23498389829292");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
   const finalRef = React.useRef(null);
+
+
   return (
     <Flex
       backgroundColor="white"

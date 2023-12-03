@@ -15,10 +15,11 @@ import socialIcons from "../assets/png/SocialIcons.svg";
 import appleBtn from "../assets/svg/appleBtn.svg";
 import googleBtn from "../assets/svg/googleplayBtn.svg";
 import logo from "../assets/svg/logo.svg";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
   return (
-    <div>
+    <Box marginX="2%">
       <Header />
       <Text textAlign="center" marginTop="4%" fontSize="48px" fontWeight="600">
         Our Pricing Plan
@@ -98,8 +99,10 @@ const Pricing = () => {
             color="white"
             borderRadius="4px"
             marginY={{ base: "3%", md: "1%" }}
+            _hover="none"
+
           >
-            Get Started
+            <Link to="/getstarted">Get Started</Link>
           </Button>
         </Box>
       </Flex>
@@ -166,6 +169,8 @@ const Pricing = () => {
             color="white"
             borderRadius="4px"
             border={{ base: "1px solid white" }}
+            _hover="none"
+
           >
             Get Started
           </Button>
@@ -228,8 +233,10 @@ const Pricing = () => {
             padding={{ base: "10% 15%", md: "5% 10%" }}
             color="white"
             borderRadius="4px"
+            _hover="none"
+
           >
-            Get Started
+            <Link to="/getstarted">Get Started</Link>
           </Button>
         </Box>
       </Flex>
@@ -311,7 +318,7 @@ const Pricing = () => {
           </Flex>
         </Flex>
       </Box>
-    </div>
+    </Box>
   );
 };
 

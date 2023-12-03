@@ -19,10 +19,15 @@ import AssetMoreIconPop from "../card/AssetMoreIconPop";
 
 const Notifications = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredAssets, setFilteredAssets] = useState([]);
+  const [filteredUserAssets, setFilteredUserAssets] = useState([]);
   const [displayProperty, setDisplayProperty] = useState(false);
 
   const initialFocusRef = React.useRef();
+
+  const display = () => {
+    if (displayProperty === true)
+    setDisplayProperty(false)
+  }
 
   const assets = [
     {
@@ -48,7 +53,8 @@ const Notifications = () => {
     const filteredAssets = assets.filter((asset) =>
       asset.name.toLowerCase().includes(searchTerm)
     );
-    setFilteredAssets(filteredAssets);
+    setFilteredUserAssets(filteredAssets);
+    return filteredUserAssets
   };
 
   return (
@@ -164,7 +170,7 @@ const Notifications = () => {
                               marginTop="-25%"
                               marginLeft="-45%"
                             >
-                              <AssetMoreIconPop onClose={setDisplayProperty} />
+                              <AssetMoreIconPop onClose={display} />
                             </PopoverContent>
                           </Popover>
                         </Flex>

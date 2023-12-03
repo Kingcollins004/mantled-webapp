@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios"; // Import axios for API requests
 import {
   Box,
   Flex,
@@ -20,28 +21,37 @@ import logo from "../assets/svg/logo.svg";
 import backArrow from "../assets/svg/back-arrow.svg";
 import "../App.css";
 
+const url =
+  "https://sentinel-production.up.railway.app/api/v1/users/sendemailverificationToken";
+
 const AccountVerification = () => {
-  const [timer, setTimer] = useState(90); // Set initial timer value to 90 seconds
+  const [timer, setTimer] = useState(90);
   const [showModal, setShowModal] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
   const inputContainerRef = useRef(null);
 
-  const handleVerify = () => {
-    const expectedCode = ["1", "2", "3", "4"]; // Replace with your expected verification code
+  const location = useLocation();
+  const selectedOption = location.state.email;
 
-    const isVerificationSuccessful = expectedCode.every(
-      (digit, index) => digit === verificationCode[index]
-    );
+  const handleVerify = async () => {
+    try {
+      const response = await axios.get(url, {
+        email: {selectedOption}, 
+        verificationCode: verificationCode.join(""),
+      });
 
-    if (isVerificationSuccessful) {
-      setShowModal(true);
-      setTimeout(() => {
-        // Navigate to the next page
-        // Replace '/next-page' with your desired URL or route
-        window.location.href = "/verification-success";
-      }, 1000);
-    } else {
-      console.log("Verification failed");
+      console.log("Verification response:", response);
+
+      if (response.data.success) {
+        setShowModal(true);
+        setTimeout(() => {
+          window.location.href = "/verification-success";
+        }, 1000);
+      } else {
+        console.log("Verification failed");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
     }
   };
 
@@ -117,9 +127,7 @@ const AccountVerification = () => {
     }
   };
 
-  const location = useLocation();
-
-  const selectedOption = location.state.phoneNumber;
+  
 
   return (
     <div>
@@ -133,7 +141,7 @@ const AccountVerification = () => {
               </Flex>
             </Box>
             <Spacer />
-            <Box padding={{base: "3.5% 0%", md: "2.5% 0%"}}>
+            <Box padding={{ base: "3.5% 0%", md: "2.5% 0%" }}>
               <Text color="#979DAC" fontWeight="600" fontSize="13px">
                 VERIFY YOUR ACCOUNT
               </Text>
@@ -160,48 +168,24 @@ const AccountVerification = () => {
             color="#707070"
             marginBottom="8%"
           >
-            A 4-digit OTP has been sent to your phone number{" "}
-            <span className="user-num">
-              +234
-              {selectedOption}
-            </span>
+            A 4-digit OTP has been sent to your emaii address 
+            <span className="user-num">{selectedOption}</span>
           </Text>
           <Box marginBottom="8%" ref={inputContainerRef}>
             <Flex justifyContent="center">
               <HStack>
                 <PinInput otp>
-                  <PinInputField
-                    height="50px"
-                    width="70px"
-                    maxLength={1}
-                    value={verificationCode[0] || ""}
-                    onChange={(e) => handleCodeChange(e, 0)}
-                    onKeyUp={handleCodeKeyUp}
-                  />
-                  <PinInputField
-                    height="50px"
-                    width="70px"
-                    maxLength={1}
-                    value={verificationCode[1] || ""}
-                    onChange={(e) => handleCodeChange(e, 1)}
-                    onKeyUp={handleCodeKeyUp}
-                  />
-                  <PinInputField
-                    height="50px"
-                    width="70px"
-                    maxLength={1}
-                    value={verificationCode[2] || ""}
-                    onChange={(e) => handleCodeChange(e, 2)}
-                    onKeyUp={handleCodeKeyUp}
-                  />
-                  <PinInputField
-                    height="50px"
-                    width="70px"
-                    maxLength={1}
-                    value={verificationCode[3] || ""}
-                    onChange={(e) => handleCodeChange(e, 3)}
-                    onKeyUp={handleCodeKeyUp}
-                  />
+                  {verificationCode.map((digit, index) => (
+                    <PinInputField
+                      key={index}
+                      height="50px"
+                      width="70px"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleCodeChange(e, index)}
+                      onKeyUp={handleCodeKeyUp}
+                    />
+                  ))}
                 </PinInput>
               </HStack>
             </Flex>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -14,9 +14,26 @@ import SuccessCard from "./SuccessCard";
 
 const AddCollabTwo = (props) => {
   const [allProperties, setAllProperties] = useState(false);
-
+  const [property, setProperty] = useState([]);
   const [displayModal, setDisplayModal] = useState(true);
   const [belowList, setBelowList] = useState(true);
+  const [selectedAssets, setSelectedAssets] = useState([]);
+
+  useEffect(() => {
+    if (allProperties) {
+      // If 'Allow access to all properties' is selected, include all assets in selectedAssets
+      setSelectedAssets([
+        "Liberty Estate, Laderin, Abeokuta, Ogun State",
+        "Challenges Mansion, Ibadan, Oyo State",
+        "Phat Homes, Lekki Phase 2, Lagos State",
+      ]);
+    } else {
+      // If specific assets are selected, include them in selectedAssets
+      setSelectedAssets(
+        property.filter((asset) => asset.isChecked).map((asset) => asset.name)
+      );
+    }
+  }, [allProperties, property]);
 
   const setList = () => {
     if (allProperties === true) {
@@ -32,13 +49,15 @@ const AddCollabTwo = (props) => {
   };
 
   const handleCheckboxChangeTwo = (event) => {
-    console.log(event.target.value);
-  };
-  const handleCheckboxChangeThree = (event) => {
-    console.log(event.target.value);
-  };
-  const handleCheckboxChangeFour = (event) => {
-    console.log(event.target.value);
+    const assetName = event.target.value;
+    setProperty((prevProperty) => {
+      const updatedProperty = prevProperty.map((asset) =>
+        asset.name === assetName
+          ? { ...asset, isChecked: event.target.checked }
+          : asset
+      );
+      return updatedProperty;
+    });
   };
 
   const handleSubmit = (event) => {
@@ -72,7 +91,7 @@ const AddCollabTwo = (props) => {
             </Flex>
           </ModalHeader>
 
-          <Box height="500px" padding={{ base: "2% 2%", md: "2% 15%" }}>
+          <Box height="fit-content" padding={{ base: "2% 2%", md: "2% 15%" }}>
             <Flex
               marginTop="8%"
               padding="1% 3%"
@@ -118,8 +137,15 @@ const AddCollabTwo = (props) => {
                     <input
                       type="checkbox"
                       // checked={allProperties}
+                      checked={
+                        property.find(
+                          (asset) =>
+                            asset.name ===
+                            "Liberty Estate, Laderin, Abeokuta, Ogun State"
+                        )?.isChecked || false
+                      }
                       onChange={handleCheckboxChangeTwo}
-                      value=" Liberty Estate, Laderin, Abeokuta, Ogun State"
+                      value="Liberty Estate, Laderin, Abeokuta, Ogun State"
                     />
                   </Flex>
                   <Flex
@@ -136,7 +162,14 @@ const AddCollabTwo = (props) => {
                     <input
                       type="checkbox"
                       // checked={allProperties}
-                      onChange={handleCheckboxChangeThree}
+                      checked={
+                        property.find(
+                          (asset) =>
+                            asset.name ===
+                            "Challenges Mansion, Ibadan, Oyo State"
+                        )?.isChecked || false
+                      }
+                      onChange={handleCheckboxChangeTwo}
                       value="Challenges Mansion, Ibadan, Oyo State"
                     />
                   </Flex>
@@ -154,7 +187,7 @@ const AddCollabTwo = (props) => {
                     <input
                       type="checkbox"
                       // checked={allProperties}
-                      onChange={handleCheckboxChangeFour}
+                      onChange={handleCheckboxChangeTwo}
                       value="Phat Homes, Lekki Phase 2, Lagos State"
                     />
                   </Flex>

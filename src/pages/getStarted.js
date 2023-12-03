@@ -8,9 +8,6 @@ import {
   Image,
   Button,
   Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
 } from "@chakra-ui/react";
 import logo from "../assets/svg/logo.svg";
 import line from "../assets/svg/Line.svg";
@@ -25,6 +22,7 @@ import country from "../assets/svg/nigeria.svg";
 import eye from "../assets/svg/eye.svg";
 import eyeOff from "../assets/svg/eye-off.svg";
 import { Toaster, toast } from "react-hot-toast";
+import { css } from "@emotion/react";
 
 const USER_REGEX = /^[A-z][A-z0-9-_ ]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[*!@#$%]).{8,24}$/;
@@ -33,7 +31,15 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const url = "https://sentinel-production.up.railway.app/api/v1/users/signup";
 
 function GetStarted() {
+  const autofillStyles = css`
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 30px white inset;
+      background-color: white;
+      /* Adjust other styles as needed */
+    }
+  `;
   const userRef = useRef();
+  const [loading, setLoading] = useState(false);
 
   const [fullName, setFullName] = useState("");
   const [validName, setValidName] = useState(false);
@@ -41,11 +47,8 @@ function GetStarted() {
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidemail] = useState(false);
-
   const [phoneNumber, setPhoneNumber] = useState("");
   const [validPhoneNumber, setValidPhoneNumber] = useState(false);
-
-
   const [password, setPassword] = useState("");
   const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
@@ -100,12 +103,18 @@ function GetStarted() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const v1 = USER_REGEX.test(fullName);
-    const v2 = PWD_REGEX.test(password);
-    const v3 = PHONE_REGEX.test(phoneNumber);
-    const v4 = EMAIL_REGEX.test(email);
+    const isValidName = USER_REGEX.test(fullName);
+    const isValidPwd = PWD_REGEX.test(password);
+    const isValidPhone = PHONE_REGEX.test(phoneNumber);
+    const isValidEmail = EMAIL_REGEX.test(email);
+
+    if (!isValidName || !isValidPwd || !isValidPhone || !isValidEmail) {
+      toast.error("Fill in your information to sign up");
+      return;
+    }
 
     try {
+      setLoading(true);
       const resp = await axios.post(url, {
         fullName,
         email,
@@ -113,22 +122,33 @@ function GetStarted() {
         password,
       });
       console.log(resp);
-    } catch (error) {
-      console.log(error.response);
-    }
-
-    if(!v1 && !v2 && !v3 && !v4){
-      toast.error("Fill in your information to sign up");
-    } else if(!v2){
-      toast.error("Create a password in the correct format");
-    } else if (!v1) {
-      toast.error("Input your fullname in the correct format");
-      return;
-    } else {
       toast.success("Success");
-      console.log(fullName, email, phoneNumber, password);
-      navigate("/accountverification");
-      navigate("/accountverification", { state: { phoneNumber } });
+      navigate("/accountverification", { state: { email } });
+    } catch (error) {
+      console.error(error);
+
+      if (error.response) {
+        const { data, status } = error.response;
+        console.error(`Error ${status}:`, data);
+
+        if (status === 409 && data.error === "This email is already in use") {
+          // Provide a user-friendly message for email already in use
+          toast.error(
+            "This email address is already in use. Please use a different email."
+          );
+        } else {
+          // Provide a generic error message for other cases
+          toast.error("An error occurred while signing up. Please try again.");
+        }
+      } else if (error.request) {
+        console.error("No response received from the server.");
+        toast.error("No response received from the server. Please try again.");
+      } else {
+        console.error("Error setting up the request:", error.message);
+        toast.error("An error occurred. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -185,17 +205,16 @@ function GetStarted() {
                 >
                   Fullname:
                 </Text>
-                <InputGroup alignItems="center">
-                  <InputLeftElement pointerEvents="none">
-                    <Image
-                      marginTop={{ base: "15px", md: "35px" }}
-                      width="45%"
-                      src={userIcon}
-                    />
-                  </InputLeftElement>
+                <Flex
+                  border="2px solid lightgray"
+                  borderRadius="10px"
+                  alignItems="center"
+                >
+                  <Box pointerEvents="none" paddingX="2%">
+                    <Image width="100%" src={userIcon} />
+                  </Box>
                   <Input
-                    padding={{ base: "7%", md: "5%" }}
-                    paddingLeft="35px"
+                    padding={{ base: "7%", md: "5% 2%" }}
                     type="text"
                     placeholder="Emeka Ayobami Yakubu"
                     value={fullName}
@@ -208,8 +227,12 @@ function GetStarted() {
                     aria-describedby="uidnote"
                     onFocus={() => setUserFocus(true)}
                     onBlur={() => setUserFocus(false)}
+                    border="none"
+                    focusBorderColor="transparent"
+                    focusBorder="0"
+                    _css={autofillStyles}
                   />
-                </InputGroup>
+                </Flex>
                 <Text
                   fontSize="12px"
                   id="uidnote"
@@ -233,16 +256,21 @@ function GetStarted() {
                   <Text marginBottom="10px" fontSize="12px" fontWeight="600">
                     Email Address
                   </Text>
-                  <InputGroup alignItems="center">
-                    <InputLeftElement alignItems="center" justifyContent="center" pointerEvents="none">
-                      <Image
-                        marginTop={{ base: "13px", md: "20px" }}
-                        src={emailIcon}
-                        
-                      />
-                    </InputLeftElement>
+                  <Flex
+                    border="2px solid lightgray"
+                    borderRadius="10px"
+                    alignItems="center"
+                  >
+                    <Box
+                      alignItems="center"
+                      justifyContent="center"
+                      pointerEvents="none"
+                      paddingLeft="4%"
+                    >
+                      <Image src={emailIcon} />
+                    </Box>
                     <Input
-                      padding={{ base: "14%", md: "10%" }}
+                      padding={{ base: "14%", md: "10% 4%" }}
                       type="email"
                       placeholder="Email Address"
                       value={email}
@@ -252,27 +280,32 @@ function GetStarted() {
                       ref={userRef}
                       required
                       aria-invalid={validEmail ? "false" : "true"}
+                      border="none"
+                      focusBorderColor="transparent"
+                      focusBorder="0"
                       // onFocus={() => setEmailFocus(true)}
                       // onBlur={() => setEmailFocus(false)}
                     />
-                  </InputGroup>
+                  </Flex>
                 </Box>
 
                 <Box width="50%" marginLeft="2%">
                   <Text marginBottom="10px" fontSize="12px" fontWeight="600">
                     Phone Number:
                   </Text>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none">
+                  <Flex
+                    border="2px solid lightgray"
+                    borderRadius="10px"
+                    alignItems="center"
+                  >
+                    <Flex pointerEvents="none">
                       <Image
                         display={{ base: "none", md: "block" }}
-                        marginLeft="80px"
-                        marginTop="20px"
+                        marginLeft="10px"
                         src={phone}
                       />
                       <Image
                         marginLeft="10px"
-                        marginTop="20px"
                         width="25px"
                         src={country}
                         display={{ base: "none", md: "block" }}
@@ -280,27 +313,29 @@ function GetStarted() {
                       <Text
                         margin={{
                           base: "13px 0px 0px 20px",
-                          md: "20px 0px 0px 10px",
+                          md: "0px 10px",
                         }}
                       >
                         +234
                       </Text>
-                    </InputLeftElement>
+                    </Flex>
                     <Input
                       padding={{ base: "14%", md: "10%" }}
                       type="number"
                       placeholder="Phone number"
                       value={phoneNumber}
                       onChange={handlePhoneNumberChange}
-                      paddingLeft={{ base: "55px", md: "120px" }}
                       id="phoneNumber"
                       ref={userRef}
                       required
                       aria-invalid={validPhoneNumber ? "false" : "true"}
+                      border="none"
+                      focusBorderColor="transparent"
+                      focusBorder="0"
                       // onFocus={() => setNumberFocus(true)}
                       // onBlur={() => setNumberFocus(false)}
                     />
-                  </InputGroup>
+                  </Flex>
                 </Box>
               </Flex>
 
@@ -308,7 +343,13 @@ function GetStarted() {
                 <Text marginTop="15px" fontSize="12px" fontWeight="600">
                   Password:
                 </Text>
-                <InputGroup marginTop="2%" size="md">
+                <Flex
+                  border="2px solid lightgray"
+                  borderRadius="10px"
+                  alignItems="center"
+                  marginTop="2%"
+                  size="md"
+                >
                   <Input
                     padding={{ base: "7%", md: "5%" }}
                     paddingLeft={{ base: "10px", md: "35px" }}
@@ -322,10 +363,12 @@ function GetStarted() {
                     aria-describedby="pwdnote"
                     onFocus={() => setPwdFocus(true)}
                     onBlur={() => setPwdFocus(false)}
+                    border="none"
+                    focusBorderColor="transparent"
+                    focusBorder="0"
                   />
-                  <InputRightElement width="4.5rem">
+                  <Box width="3.5rem">
                     <Button
-                      marginTop={{ base: "10px", md: "30%" }}
                       h="1.75rem"
                       size="sm"
                       onClick={togglePasswordVisibility}
@@ -339,8 +382,8 @@ function GetStarted() {
                         alt="Toggle Password Visibility"
                       />
                     </Button>
-                  </InputRightElement>
-                </InputGroup>
+                  </Box>
+                </Flex>
                 <p
                   id="pwdnote"
                   className={
@@ -348,17 +391,6 @@ function GetStarted() {
                   }
                 >
                   8 to 24 characters.
-                  <br />
-                  Must include uppercase and lowercase letters, a number and a
-                  special character.
-                  <br />
-                  Allowed special characters:{" "}
-                  <span aria-label="asterix">*</span>{" "}
-                  <span aria-label="exclamation mark">!</span>{" "}
-                  <span aria-label="at symbol">@</span>{" "}
-                  <span aria-label="hashtag">#</span>{" "}
-                  <span aria-label="dollar sign">$</span>{" "}
-                  <span aria-label="percent">%</span>
                 </p>
               </Box>
 
@@ -375,18 +407,18 @@ function GetStarted() {
                   color: "white",
                 }}
               >
-                Create my Account
+                {loading ? "Creating Account..." : "Create my Account"}
               </Button>
             </form>
 
             <Text marginTop="10px" fontSize="15px">
               Already have an account?
-              <Link to="login" className="login">
+              <Link to="/login" className="login">
                 Login
               </Link>
             </Text>
           </Box>
-          
+
           <Box
             backgroundSize="cover"
             backgroundRepeat="no-repeat"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -10,6 +10,8 @@ import {
   ModalOverlay,
   ModalContent,
   ModalBody,
+  SkeletonCircle,
+  SkeletonText,
 } from "@chakra-ui/react";
 import assetHome from "../assets/svg/assetHouse.svg";
 import assetFolder from "../assets/svg/assetFolder.svg";
@@ -22,10 +24,64 @@ import CollabModal from "./CollabModal";
 import "../App.css";
 import { useDisclosure } from "@chakra-ui/react";
 import ChooseAssets from "../card/ChooseAssets";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
+const assetOverviewUrl =
+  "https://sentinel-production.up.railway.app/api/v1/assets/overview";
 
 const AssetModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(true);
   const finalRef = React.useRef(null);
+  const [assets, setAssets] = useState([]);
+  // const location = useLocation();
+  // const token = location?.state?.token;
+
+  const userData = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(assetOverviewUrl, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const fetchedAssets = response.data.data.assets;
+        setAssets(fetchedAssets);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (userData.token) {
+      fetchData();
+    } else {
+      // navigate("/login")
+    }
+  }, [userData.token]);
+
+  if (isLoading) {
+    return (
+      <Box padding="6" boxShadow="lg" bg="white">
+        <SkeletonCircle size="10" />
+        <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="2" />
+      </Box>
+    );
+  }
+
+  // useEffect(() => {
+  //   if (!token) {
+  //    navigate("/login")
+  //   } else {
+  //     fetchData();
+  //   }
+  // }, [token]);
+
   return (
     <div className="assets">
       <Box margin="0px 1%" width="100%">
@@ -71,316 +127,80 @@ const AssetModal = () => {
                     </ModalBody>
                   </ModalContent>
                 </Modal>
-
               </Box>
             </Flex>
             <Box maxHeight={{ md: "400px" }} scroll overflowY="auto">
-              <Box marginBottom="5%" width="100%">
-                <Flex>
-                  <Box
-                    backgroundColor="#FDF3EB"
-                    padding={{ base: "1%", md: "2%" }}
-                    justifyContent="center"
-                    display="flex"
-                    borderRadius={{ base: "8px", md: "17px" }}
-                    width={{ base: "45px", md: "50px" }}
-                    height={{ base: "45px", md: "50px" }}
-                  >
-                    <Image width={{ base: "60%", md: "80%" }} src={assetHome} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Box marginLeft="3%" marginTop="1%">
-                    <Text fontSize="14px" color="#000000" fontWeight="medium">
-                      Real Estate
+              {assets.map((asset, index) => (
+                <Box key={index} marginBottom="5%" width="100%">
+                  <Flex alignItems="center">
+                    <Box
+                      backgroundColor="#FDF3EB"
+                      padding="2%"
+                      justifyContent="center"
+                      display="flex"
+                      borderRadius={{ base: "8px", md: "17px" }}
+                      width={{ base: "45px", md: "50px" }}
+                      height={{ base: "45px", md: "50px" }}
+                    >
+                      {/* Assuming asset.image is a property in your asset object containing the image URL */}
+                      <Image width="80%" src={asset.image} />
+                    </Box>
+                    <Box marginLeft="3%" marginTop="1%">
+                      <Text fontSize="14px" color="#000000" fontWeight="medium">
+                        {asset.type}
+                      </Text>
+                      {asset.type === "Debts" ? (
+                        <Text
+                          fontSize="12px"
+                          color="#8B8B8B"
+                          fontWeight="normal"
+                          width="fit-content"
+                        >
+                          Details of all your real estate assets,<br></br> lands, houses,
+                          terraces, apartments etc
+                        </Text>
+                      ) : null}
+
+                      {asset.type === "FinancialAssets" ? (
+                        <Text
+                          fontSize="12px"
+                          color="#8B8B8B"
+                          fontWeight="normal"
+                        >
+                         Cash, shares, cryptocurrency, pension schemes.
+                        </Text>
+                      ) : null}
+                    </Box>
+                    <Spacer />
+                    <Box
+                      display={{ base: "none", md: "flex" }}
+                      paddingTop="4%"
+                      width="30%"
+                    >
+                      {/* Assuming asset.progress is a property in your asset object containing the progress value */}
+                      <ProgressBar progress={asset.percentage} />
+                    </Box>
+                    <Text
+                      paddingTop="2.7%"
+                      marginLeft="1%"
+                      color="black"
+                      fontSize="12px"
+                      display={{ base: "none", md: "flex" }}
+                    >
+                      {asset.percentage}%
                     </Text>
-                    <Text fontSize="12px" color="#8B8B8B" fontWeight="normal">
-                      Last Modified, 9 days ago
-                    </Text>
-                  </Box>
-                  <Spacer />
-                  <Box
-                    display={{ base: "none", md: "flex" }}
-                    paddingTop="4%"
-                    width="30%"
-                  >
-                    <ProgressBar progress={16} />
-                  </Box>
-                 
-                  <Text
-                    paddingTop="2.7%"
-                    marginLeft="1%"
-                    color="black"
-                    fontSize="12px"
-                    display={{ base: "none", md: "flex" }}
-                  >
-                    16%
-                  </Text>
-                  <Spacer />
-                  <Button
-                    width="71px"
-                    fontSize="11px"
-                    border="0.5px solid #7070704A"
-                    backgroundColor="#FAFAFA"
-                  >
-                    Assets
-                  </Button>
-                </Flex>
-              </Box>
-              <Box marginBottom="5%" width="100%">
-                <Flex>
-                  <Box
-                    backgroundColor="#FDF3EB"
-                    padding="2%"
-                    justifyContent="center"
-                    display="flex"
-                    borderRadius={{ base: "8px", md: "17px" }}
-                    width={{ base: "45px", md: "50px" }}
-                    height={{ base: "45px", md: "50px" }}
-                  >
-                    <Image width="80%" src={assetFolder} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Box marginLeft="3%" marginTop="1%">
-                    <Text fontSize="14px" color="#000000" fontWeight="medium">
-                      Tangible Assets
-                    </Text>
-                    <Text fontSize="12px" color="#8B8B8B" fontWeight="normal">
-                      Last Modified, 9 days ago
-                    </Text>
-                  </Box>
-                  <Spacer />
-                  <Box
-                    display={{ base: "none", md: "flex" }}
-                    paddingTop="4%"
-                    width="30%"
-                  >
-                    <ProgressBar progress={44} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Text
-                    paddingTop="2.7%"
-                    marginLeft="1%"
-                    color="black"
-                    fontSize="12px"
-                    display={{ base: "none", md: "flex" }}
-                  >
-                    44%
-                  </Text>
-                  <Spacer />
-                  <Button
-                    width="71px"
-                    fontSize="11px"
-                    border="0.5px solid #7070704A"
-                    backgroundColor="#FAFAFA"
-                  >
-                    Assets
-                  </Button>
-                </Flex>
-              </Box>
-              <Box marginBottom="5%" width="100%">
-                <Flex>
-                  <Box
-                    backgroundColor="#FDF3EB"
-                    padding="2%"
-                    justifyContent="center"
-                    display="flex"
-                    borderRadius={{ base: "8px", md: "17px" }}
-                    width={{ base: "45px", md: "50px" }}
-                    height={{ base: "45px", md: "50px" }}
-                  >
-                    <Image width="80%" src={assetCard} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Box marginLeft="3%" marginTop="1%">
-                    <Text fontSize="14px" color="#000000" fontWeight="medium">
-                      Financial Assets
-                    </Text>
-                    <Text fontSize="12px" color="#8B8B8B" fontWeight="normal">
-                      Last Modified, 9 days ago
-                    </Text>
-                  </Box>
-                  <Spacer />
-                  <Box
-                    display={{ base: "none", md: "flex" }}
-                    paddingTop="4%"
-                    width="30%"
-                  >
-                    <ProgressBar progress={5} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Text
-                    paddingTop="2.7%"
-                    marginLeft="1%"
-                    color="black"
-                    fontSize="12px"
-                    display={{ base: "none", md: "flex" }}
-                  >
-                    5%
-                  </Text>
-                  <Spacer />
-                  <Button
-                    width="71px"
-                    fontSize="11px"
-                    border="0.5px solid #7070704A"
-                    backgroundColor="#FAFAFA"
-                  >
-                    Assets
-                  </Button>
-                </Flex>
-              </Box>
-              <Box marginBottom="5%" width="100%">
-                <Flex>
-                  <Box
-                    backgroundColor="#FDF3EB"
-                    padding="2%"
-                    justifyContent="center"
-                    display="flex"
-                    borderRadius={{ base: "8px", md: "17px" }}
-                    width={{ base: "45px", md: "50px" }}
-                    height={{ base: "45px", md: "50px" }}
-                  >
-                    <Image width="80%" src={assetCar} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Box marginLeft="3%" marginTop="1%">
-                    <Text fontSize="14px" color="#000000" fontWeight="medium">
-                      Personal Effects
-                    </Text>
-                    <Text fontSize="12px" color="#8B8B8B" fontWeight="normal">
-                      Last Modified, 9 days ago
-                    </Text>
-                  </Box>
-                  <Spacer />
-                  <Box
-                    display={{ base: "none", md: "flex" }}
-                    paddingTop="4%"
-                    width="30%"
-                  >
-                    <ProgressBar progress={32} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Text
-                    paddingTop="2.7%"
-                    marginLeft="1%"
-                    color="black"
-                    fontSize="12px"
-                    display={{ base: "none", md: "flex" }}
-                  >
-                    32%
-                  </Text>
-                  <Spacer />
-                  <Button
-                    width="71px"
-                    fontSize="11px"
-                    border="0.5px solid #7070704A"
-                    backgroundColor="#FAFAFA"
-                  >
-                    Assets
-                  </Button>
-                </Flex>
-              </Box>
-              <Box marginBottom="5%" width="100%">
-                <Flex>
-                  <Box
-                    backgroundColor="#FDF3EB"
-                    padding="2%"
-                    justifyContent="center"
-                    display="flex"
-                    borderRadius={{ base: "8px", md: "17px" }}
-                    width={{ base: "45px", md: "50px" }}
-                    height={{ base: "45px", md: "50px" }}
-                  >
-                    <Image width="80%" src={assetChart} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Box marginLeft="3%" marginTop="1%">
-                    <Text fontSize="14px" color="#000000" fontWeight="medium">
-                      Debt and Liabilities
-                    </Text>
-                    <Text fontSize="12px" color="#8B8B8B" fontWeight="normal">
-                      Last Modified, 9 days ago
-                    </Text>
-                  </Box>
-                  <Spacer />
-                  <Box
-                    display={{ base: "none", md: "flex" }}
-                    paddingTop="4%"
-                    width="30%"
-                  >
-                    <ProgressBar progress={56} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Text
-                    paddingTop="2.7%"
-                    marginLeft="1%"
-                    color="black"
-                    fontSize="12px"
-                    display={{ base: "none", md: "flex" }}
-                  >
-                    56%
-                  </Text>
-                  <Spacer />
-                  <Button
-                    width="71px"
-                    fontSize="11px"
-                    border="0.5px solid #7070704A"
-                    backgroundColor="#FAFAFA"
-                  >
-                    Assets
-                  </Button>
-                </Flex>
-              </Box>
-              <Box marginBottom="5%" width="100%">
-                <Flex>
-                  <Box
-                    backgroundColor="#FDF3EB"
-                    padding="2%"
-                    justifyContent="center"
-                    display="flex"
-                    borderRadius={{ base: "8px", md: "17px" }}
-                    width={{ base: "45px", md: "50px" }}
-                    height={{ base: "45px", md: "50px" }}
-                  >
-                    <Image width="80%" src={assetOthers} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Box marginLeft="3%" marginTop="1%">
-                    <Text fontSize="14px" color="#000000" fontWeight="medium">
-                      Others
-                    </Text>
-                    <Text fontSize="12px" color="#8B8B8B" fontWeight="normal">
-                      Last Modified, 9 days ago
-                    </Text>
-                  </Box>
-                  <Spacer />
-                  <Box
-                    display={{ base: "none", md: "flex" }}
-                    paddingTop="4%"
-                    width="30%"
-                  >
-                    <ProgressBar progress={9} />
-                  </Box>
-                  {/* <Spacer /> */}
-                  <Text
-                    paddingTop="2.7%"
-                    marginLeft="1%"
-                    color="black"
-                    fontSize="12px"
-                    display={{ base: "none", md: "flex" }}
-                  >
-                    9%
-                  </Text>
-                  <Spacer />
-                  <Button
-                    width="71px"
-                    fontSize="11px"
-                    border="0.5px solid #7070704A"
-                    backgroundColor="#FAFAFA"
-                  >
-                    Assets
-                  </Button>
-                </Flex>
-              </Box>
+                    <Spacer />
+                    <Button
+                      width="71px"
+                      fontSize="11px"
+                      border="0.5px solid #7070704A"
+                      backgroundColor="#FAFAFA"
+                    >
+                      Assets
+                    </Button>
+                  </Flex>
+                </Box>
+              ))}
             </Box>
           </Box>
           <Box width={{ base: "100%", md: "50%" }}>

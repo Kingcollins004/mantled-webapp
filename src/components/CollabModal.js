@@ -10,7 +10,7 @@ import {
   ModalOverlay,
   ModalBody,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dummyImg from "../assets/png/dummyImg.png";
 import Av1 from "../assets/png/avatar1.jpg";
 import Av2 from "../assets/png/avatar2.jpg";
@@ -18,10 +18,44 @@ import Av3 from "../assets/png/avatar3.jpg";
 import Arrow from "../assets/svg/arrowIcon.svg";
 import { useDisclosure } from "@chakra-ui/react";
 import AddCollab from "../card/AddCollab";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
+const getCollab =
+  "https://sentinel-production.up.railway.app/api/v1/assets/invite";
+
+  
 const CollabModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
+  const [pendingCollab, setPendingCollab] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const userData = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const getInvite = async () => {
+      try {
+        const response = await axios.get(getCollab, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const fetchedInvites = response.data.data.assets;
+        setPendingCollab(fetchedInvites);
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getInvite();
+  }, []);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -31,9 +65,14 @@ const CollabModal = () => {
         borderRadius="23px"
         marginLeft="5%"
         marginRight="3%"
-        marginBottom={{base: "10%"}}
+        marginBottom={{ base: "10%" }}
       >
-        <Flex alignItems="center" paddingTop="2%" marginBottom={{base:"10%", md:"5%"}} width="100%">
+        <Flex
+          alignItems="center"
+          paddingTop="2%"
+          marginBottom={{ base: "10%", md: "5%" }}
+          width="100%"
+        >
           <Text fontWeight="medium" fontSize="16px" color="#121936">
             Collaborators
           </Text>
@@ -52,7 +91,7 @@ const CollabModal = () => {
             <ModalOverlay />
             <ModalContent
               borderRadius="30px"
-              width={{base:"97%", md: "45%"}}
+              width={{ base: "97%", md: "45%" }}
               maxW="unset"
               textAlign="center"
             >
@@ -112,7 +151,7 @@ const CollabModal = () => {
             ADDED COLLABORATORS
           </Text>
           <Flex marginLeft="1%" marginBottom="4%">
-            <Image width={{base:"14%", md:"8%"}} src={Av1} />
+            <Image width={{ base: "14%", md: "8%" }} src={Av1} />
             <Box marginLeft="1%" paddingTop="1%">
               <Text color="#000000" fontSize="12px" fontWeight="semibold">
                 Tomiloluwa Ayayi
@@ -125,7 +164,7 @@ const CollabModal = () => {
             <Image src={Arrow} />
           </Flex>
           <Flex marginLeft="1%" marginBottom="4%">
-            <Image width={{base:"14%", md:"8%"}} src={Av2} />
+            <Image width={{ base: "14%", md: "8%" }} src={Av2} />
             <Box marginLeft="1%" paddingTop="1%">
               <Text color="#000000" fontSize="12px" fontWeight="semibold">
                 Destiny Etiko
@@ -138,7 +177,7 @@ const CollabModal = () => {
             <Image src={Arrow} />
           </Flex>
           <Flex marginLeft="1%" marginBottom="4 %">
-            <Image width={{base:"14%", md:"8%"}} src={Av3} />
+            <Image width={{ base: "14%", md: "8%" }} src={Av3} />
             <Box marginLeft="1%">
               <Text color="#000000" fontSize="12px" fontWeight="semibold">
                 Philips Oluwatoyin

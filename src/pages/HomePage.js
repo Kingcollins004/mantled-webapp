@@ -25,6 +25,7 @@ import manImg from "../assets/png/manImg.png";
 import logo from "../assets/svg/logo.svg";
 import socialIcons from "../assets/png/SocialIcons.svg";
 import { useMediaQuery } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
@@ -73,8 +74,9 @@ const HomePage = () => {
             padding={{ base: "9% 16%", md: "1.5% 3%" }}
             color="white"
             marginTop={{ base: "7%", md: "0" }}
+            _hover="none"
           >
-            Get Started
+            <Link to="/getstarted">Get Started</Link>
           </Button>
         </Box>
         <Spacer />
@@ -193,8 +195,9 @@ const HomePage = () => {
               marginTop="5%"
               backgroundColor="#001233"
               border="1px solid white"
+              _hover="none"
             >
-              Get Started
+              <Link to="/getstarted">Get Started</Link>
             </Button>
           </Box>
           <Image width="100%" marginTop="1%" src={imgR} />
@@ -262,8 +265,9 @@ const HomePage = () => {
             marginTop="5%"
             backgroundColor="#001233"
             border="1px solid white"
+            _hover="none"
           >
-            Get Started
+            <Link to="/getstarted">Get Started</Link>
           </Button>
         </Box>
         <Box flex="1">
@@ -302,6 +306,7 @@ const HomePage = () => {
             color="white"
             padding={{ base: "4% 8%", md: "2.4% 5%" }}
             fontSize={{ base: "14px" }}
+            _hover="none"
           >
             Subscribe Now!
           </Button>
@@ -315,7 +320,7 @@ const HomePage = () => {
         </Text>
         <Flex
           alignItems={{ base: "left", md: "center" }}
-          flexDirection={{ base: "column", md:"row" }}
+          flexDirection={{ base: "column", md: "row" }}
           marginTop="3%"
         >
           <Box>
@@ -327,7 +332,10 @@ const HomePage = () => {
             <Text>Get Started</Text>
           </Box>
           <Spacer />
-          <Box marginY={{ base: "5%", md:"2%" }} textAlign={{ base: "center", md: "left" }}>
+          <Box
+            marginY={{ base: "5%", md: "2%" }}
+            textAlign={{ base: "center", md: "left" }}
+          >
             <Text fontSize={{ base: "20px", md: "28px" }} fontWeight="semibold">
               Get the App on
             </Text>

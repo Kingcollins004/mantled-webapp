@@ -7,8 +7,9 @@ import IndividualRealEstate from "./IndividualRealEstate";
 
 const IndividualAssets = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredAssets, setFilteredAssets] = useState([]);
+  const [filteredUserAssets, setFilteredUserAssets] = useState([]);
   const [assetComp, setAssetComp] = useState(false);
+
 
   const assets = [
     {
@@ -48,7 +49,8 @@ const IndividualAssets = (props) => {
     const filteredAssets = assets.filter((asset) =>
       asset.name.toLowerCase().includes(searchTerm)
     );
-    setFilteredAssets(filteredAssets);
+    setFilteredUserAssets(filteredAssets);
+    return filteredUserAssets
   };
 
   const handleComp = (asset) => {

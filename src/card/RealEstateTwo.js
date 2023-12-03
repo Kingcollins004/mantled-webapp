@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import buildingIcon from "../assets/svg/buildingIcon.svg";
+import carIcon from "../assets/svg/carIcon.svg";
+import debtIcon from "../assets/svg/debtIcon.svg";
+import financeIcon from "../assets/svg/financeIcon.svg";
+import tokenIcon from "../assets/svg/tokenIcon.svg";
+import otherIcon from "../assets/svg/otherIcon.svg";
 import {
   Box,
   Flex,
@@ -64,13 +69,25 @@ const RealEstateTwo = (props) => {
                   marginLeft={{base:"-14%"}}
                   src={backArrow}
                 />
-                <Text fontWeight="500" fontSize={{base:"13px", md:"18px"}}>
+                <Text marginLeft="5%" fontWeight="500" fontSize={{base:"13px", md:"18px"}}>
                   Add Asset Info
                 </Text>
               </Flex>
               <Spacer />
               <Box marginLeft={{base:"-14%"}} backgroundColor="#F5F0FF" borderRadius="50%" padding="2%">
-                <Image src={buildingIcon} />
+              {props.selectedOption === "Real Estate" ? (
+                  <Image src={buildingIcon} />
+                ) : props.selectedOption === "Tangible Assets" ? (
+                  <Image src={tokenIcon} />
+                ) : props.selectedOption === "Financial Assets" ? (
+                  <Image src={financeIcon} />
+                ) : props.selectedOption === "Personal Effects" ? (
+                  <Image src={carIcon} />
+                ) : props.selectedOption === "Debts and Liabilities" ? (
+                  <Image src={debtIcon} />
+                ) : props.selectedOption === "Others" ? (
+                  <Image src={otherIcon} />
+                ) : null}
               </Box>
               <Spacer />
               <Text
@@ -170,7 +187,6 @@ const RealEstateTwo = (props) => {
               marginTop="3%"
               width="100%"
               textAlign="right"
-              // display={selectedOption ? "block" : "none"}
             >
               <Button
                 color="white"
@@ -189,7 +205,7 @@ const RealEstateTwo = (props) => {
         </div>
       ) : (
         <div>
-          <RealEstateThree goBack={() => setDisplayModal(true)} />
+          <RealEstateThree selectedOption={props.selectedOption} goBack={() => setDisplayModal(true)} />
         </div>
       )}
     </div>

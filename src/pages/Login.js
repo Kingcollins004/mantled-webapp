@@ -1,16 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Flex,
-  Text,
-  Image,
-  Button,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-} from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Button, Input } from "@chakra-ui/react";
 import logo from "../assets/svg/logo.svg";
 import line from "../assets/svg/Line.svg";
 import passwordIcon from "../assets/svg/password-icon.svg";
@@ -23,9 +13,12 @@ import eyeOff from "../assets/svg/eye-off.svg";
 import "../App.css";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "../Feature/actions";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[*!@#$%]).{8,24}$/;
+const PWD_REGEX = /^.{8,24}$/;
+
 const url = "https://sentinel-production.up.railway.app/api/v1/users/signIn";
 
 function Login() {
@@ -33,12 +26,14 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidemail] = useState(false);
-
   const [password, setPassword] = useState("");
   const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userToken, setUserToken] = useState("");
+  const dispatch = useDispatch();
+
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -70,25 +65,40 @@ function Login() {
     const v2 = EMAIL_REGEX.test(email);
 
     try {
+      // Assuming you have defined `url`, `email`, and `password` somewhere before this code
       const resp = await axios.post(url, {
         email,
         password,
       });
+      const { data } = resp;
+      console.log("API Response:", data);
+      const userName = data?.data?.user?.fullName;
+      const userToken = data?.token;
+      setUserName(userName);
+      setUserToken(userToken);
       console.log(resp);
+      // Assuming you have defined `v1` and `v2` somewhere before this code
+      if (!v1 && !v2) {
+        toast.error("Please input your Email and Password");
+        return;
+      } else if (!v1) {
+        toast.error("Please Input your Password");
+      } else if (!v2) {
+        toast.error("Please Input your Email");
+      } else {
+        // Dispatch user data to the Redux store
+        const userData = {
+          name: userName,
+          token: userToken,
+          // other data
+        };
+        dispatch(setUser(userData));
+  
+        // Navigate to the dashboard
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.log(error.response);
-    }
-
-    if (!v1 && !v2) {
-      toast.error("Please input your Email and Password");
-      return;
-    } else if (!v1) {
-      toast.error("Please Input your Password");
-    } else if (!v2) {
-      toast.error("Please Input your Email");
-    } else {
-      console.log(email, password);
-      navigate("/dashboard");
     }
   };
 
@@ -138,12 +148,16 @@ function Login() {
             <Text marginBottom="10px" fontSize="12px" fontWeight="600">
               Email Address
             </Text>
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <Image  marginTop={{ base: "15px", md: "22px" }} src={emailIcon} />
-              </InputLeftElement>
+            <Flex
+              alignItems="center"
+              border="2px solid lightgray"
+              borderRadius="10px"
+            >
+              <Box pointerEvents="none" paddingX="2%">
+                <Image src={emailIcon} />
+              </Box>
               <Input
-               padding={{ base: "7%", md: "5%" }}
+                padding={{ base: "7%", md: "5%" }}
                 type="email"
                 placeholder="Email Address"
                 value={email}
@@ -153,21 +167,28 @@ function Login() {
                 ref={userRef}
                 required
                 aria-invalid={validEmail ? "false" : "true"}
-                // onFocus={() => setEmailFocus(true)}
-                // onBlur={() => setEmailFocus(false)}
+                border="none"
+                focusBorderColor="transparent"
+                focusBorder="0"
               />
-            </InputGroup>
+            </Flex>
           </Box>
 
-          <InputGroup marginTop="5%" size="md">
-            <InputLeftElement pointerEvents="none">
-              <Image marginRight="15%" marginTop={{ base: "10px", md: "22px" }} src={passwordIcon} />
-            </InputLeftElement>
+          <Flex
+            alignItems="center"
+            border="2px solid lightgray"
+            borderRadius="10px"
+            marginTop="5%"
+            size="md"
+          >
+            <Box pointerEvents="none" paddingX="2%">
+              <Image marginRight="15%" width="20px" src={passwordIcon} />
+            </Box>
             <Input
               pr="4.5rem"
               placeholder="Enter password"
               padding={{ base: "7%", md: "5%" }}
-              paddingLeft={{base: "30px"}}
+              paddingLeft={{ base: "30px" }}
               type={showPassword ? "text" : "password"}
               id="password"
               onChange={handlePasswordChange}
@@ -177,10 +198,12 @@ function Login() {
               aria-describedby="pwdnote"
               onFocus={() => setPwdFocus(true)}
               onBlur={() => setPwdFocus(false)}
+              border="none"
+              focusBorderColor="transparent"
+              focusBorder="0"
             />
-            <InputRightElement width="4.5rem">
+            <Box width="3.5rem">
               <Button
-                marginTop="30%"
                 h="1.75rem"
                 size="sm"
                 onClick={togglePasswordVisibility}
@@ -194,23 +217,13 @@ function Login() {
                   alt="Toggle Password Visibility"
                 />
               </Button>
-            </InputRightElement>
-          </InputGroup>
+            </Box>
+          </Flex>
           <p
             id="pwdnote"
             className={pwdFocus && !validPwd ? "instructions" : "offscreen"}
           >
             8 to 24 characters.
-            <br />
-            Must include uppercase and lowercase letters, a number and a special
-            character.
-            <br />
-            Allowed special characters: <span aria-label="asterix">*</span>{" "}
-            <span aria-label="exclamation mark">!</span>{" "}
-            <span aria-label="at symbol">@</span>{" "}
-            <span aria-label="hashtag">#</span>{" "}
-            <span aria-label="dollar sign">$</span>{" "}
-            <span aria-label="percent">%</span>
           </p>
 
           <Button
@@ -227,7 +240,7 @@ function Login() {
 
           <Text color="#979DAC" marginTop="10px" fontSize="15px">
             Not registered yet?
-            <Link to="/" className="login">
+            <Link to="/getstarted" className="login">
               Create an Account
             </Link>
           </Text>

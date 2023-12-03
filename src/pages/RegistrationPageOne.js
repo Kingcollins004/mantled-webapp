@@ -23,7 +23,6 @@ const RegistrationPageOne = () => {
   const userRef = useRef();
 
   const [image, setImage] = useState(null);
-
   const [date, setDate] = useState("");
   const [maritalStatus, setMaritalStatus] = useState("");
   const [numChild, setNumChild] = useState("");

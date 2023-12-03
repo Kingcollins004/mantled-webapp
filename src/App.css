@@ -66,4 +66,6 @@
 .overlay.open {
   display: block;
 }
-
+.active-link {
+  color: #00A088; /* Change this to the desired color for the active link */
+}

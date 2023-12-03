@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import buildingIcon from "../assets/svg/buildingIcon.svg";
+import carIcon from "../assets/svg/carIcon.svg";
+import debtIcon from "../assets/svg/debtIcon.svg";
+import financeIcon from "../assets/svg/financeIcon.svg";
+import tokenIcon from "../assets/svg/tokenIcon.svg";
+import otherIcon from "../assets/svg/otherIcon.svg";
 import {
   Box,
   Flex,
@@ -14,9 +19,7 @@ import ProgressBar from "../utilities/ProgressBar";
 import RealEstateTwo from "./RealEstateTwo";
 import backArrow from "../assets/svg/back-arrow.svg";
 
-
 const RealEstate = (props) => {
-  // const [selectedOption, setSelectedOption] = useState("");
   const [assetName, setAssetName] = useState("");
   const [displayModal, setDisplayModal] = useState(true);
 
@@ -34,7 +37,6 @@ const RealEstate = (props) => {
     setAssetName(e.target.value);
   };
 
-
   return (
     <div>
       {displayModal ? (
@@ -42,23 +44,40 @@ const RealEstate = (props) => {
           <ModalHeader marginTop="2%" fontSize="18px">
             <Flex alignItems="center">
               <Flex alignItems="center" marginTop="2%">
-              <Image
+                <Image
                   onClick={() => {
                     props.goBack();
                   }}
                   width="10%"
                   marginRight="2%"
-                  marginLeft={{base:"-14%"}}
+                  marginLeft={{ base: "-14%" }}
                   marginTop="0px"
                   src={backArrow}
                 />
-                <Text fontWeight="500" fontSize={{base:"13px", md:"18px"}}>
+                <Text marginLeft="5%" fontWeight="500" fontSize={{ base: "13px", md: "18px" }}>
                   Add Asset Info
                 </Text>
               </Flex>
               <Spacer />
-              <Box marginLeft={{base:"-14%"}} backgroundColor="#F5F0FF" borderRadius="50%" padding="2%">
-                <Image src={buildingIcon} />
+              <Box
+                marginLeft={{ base: "-14%" }}
+                backgroundColor="#F5F0FF"
+                borderRadius="50%"
+                padding="2%"
+              >
+                {props.selectedOption === "Real Estate" ? (
+                  <Image src={buildingIcon} />
+                ) : props.selectedOption === "Tangible Assets" ? (
+                  <Image src={tokenIcon} />
+                ) : props.selectedOption === "Financial Assets" ? (
+                  <Image src={financeIcon} />
+                ) : props.selectedOption === "Personal Effects" ? (
+                  <Image src={carIcon} />
+                ) : props.selectedOption === "Debts and Liabilities" ? (
+                  <Image src={debtIcon} />
+                ) : props.selectedOption === "Others" ? (
+                  <Image src={otherIcon} />
+                ) : null}
               </Box>
               <Spacer />
               <Text
@@ -74,7 +93,7 @@ const RealEstate = (props) => {
           <Box height="5%">
             <ProgressBar progress={33.3} progressH={40} />
           </Box>
-          <Box height="400px" padding={{base:"7% 5%", md:"2% 15%"}}>
+          <Box height="400px" padding={{ base: "7% 5%", md: "2% 15%" }}>
             <Text fontSize="12px" textAlign="left" margin="2% 0%">
               Enter Asset Name
             </Text>
@@ -92,7 +111,6 @@ const RealEstate = (props) => {
               marginTop="3%"
               width="100%"
               textAlign="right"
-              // display={selectedOption ? "block" : "none"}
             >
               <Button
                 color="white"
@@ -111,7 +129,7 @@ const RealEstate = (props) => {
         </div>
       ) : (
         <div>
-          <RealEstateTwo goBack={() => setDisplayModal(true)} />
+          <RealEstateTwo selectedOption={props.selectedOption} goBack={() => setDisplayModal(true)} />
         </div>
       )}
     </div>

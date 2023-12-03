@@ -13,36 +13,37 @@ import backArrow from "../assets/svg/back-arrow.svg";
 import AddCollabTwo from "./AddCollabTwo";
 
 const AddCollab = (props) => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [assign, setAssign] = useState("");
+  const [userData, setUserData] = useState({
+    collabName: "",
+    collabEmail: "",
+    assignProp: ""
+  });
+
   const [displayModal, setDisplayModal] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(fullName, email, assign);
-    if (!fullName && !email && !assign) {
+    console.log(userData);
+
+    if (!userData.collabName || !userData.collabEmail || !userData.assignProp) {
       alert("Please fill all required fields");
     } else {
       setDisplayModal(false);
     }
   };
 
-  const handleAddressOneChange = (e) => {
-    setFullName(e.target.value);
-  };
-  const handleAddressTwoChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const handleCountryChange = (e) => {
-    setAssign(e.target.value);
+  const handleInputChange = (field, value) => {
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      [field]: value,
+    }));
   };
 
   return (
     <div>
       {displayModal ? (
         <div>
-          <ModalHeader marginTop="2%" fontSize="18px">
+          <ModalHeader height="fit-content" marginTop="2%" fontSize="18px">
             <Flex>
               <Flex
                 padding={{base:"0px 3%", md: "0 12%"}}
@@ -77,8 +78,8 @@ const AddCollab = (props) => {
                 padding="4%"
                 placeholder="Enter here..."
                 type="text"
-                value={fullName}
-                onChange={handleAddressOneChange}
+                value={userData.collabName}
+                onChange={(e) => handleInputChange('collabName', e.target.value)}
               />
             </Box>
             <Box>
@@ -92,8 +93,8 @@ const AddCollab = (props) => {
                 padding="4%"
                 type="email"
                 placeholder="Enter here..."
-                value={email}
-                onChange={handleAddressTwoChange}
+                value={userData.collabEmail}
+                onChange={(e) => handleInputChange('collabEmail', e.target.value)}
               />
             </Box>
             <Box>
@@ -105,8 +106,8 @@ const AddCollab = (props) => {
                 borderRadius="10px"
                 fontSize="14px"
                 placeholder="---Select asset to assign---"
-                value={assign}
-                onChange={handleCountryChange}
+                value={userData.assignProp}
+                onChange={(e) => handleInputChange('assignProp', e.target.value)}
               >
                 <option>Real Estate</option>
                 <option>Tangible Asset</option>
@@ -140,7 +141,8 @@ const AddCollab = (props) => {
         </div>
       ) : (
         <div>
-          <AddCollabTwo goBack={() => setDisplayModal(true)} />
+          {/* Pass userData as props to the ChildComponent */}
+          <AddCollabTwo goBack={() => setDisplayModal(true)} userData={userData} />
         </div>
       )}
     </div>

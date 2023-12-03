@@ -37,17 +37,19 @@ const MyVault = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [displayModal, setDisplayModal] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredAssets, setFilteredAssets] = useState([]);
+  const [filteredUserAssets, setFilteredUserAssets] = useState([]);
   const [assetComp, setAssetComp] = useState(false);
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const handleSwitchB = (option) => {
     setSelectedOption(option);
     setDisplayModal(false);
+    return selectedOption
   };
   const handleSwitchA = (option) => {
     setSelectedOption(option);
     setDisplayModal(true);
+    return selectedOption
   };
 
   const assets = [
@@ -89,7 +91,8 @@ const MyVault = () => {
     const filteredAssets = assets.filter((asset) =>
       asset.name.toLowerCase().includes(searchTerm)
     );
-    setFilteredAssets(filteredAssets);
+    setFilteredUserAssets(filteredAssets);
+    return filteredUserAssets
   };
 
   const handleComp = (asset) => {

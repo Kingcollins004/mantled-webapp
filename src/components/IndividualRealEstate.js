@@ -28,10 +28,9 @@ import Emoji5 from "../assets/svg/emoji5.svg";
 const IndividualRealEstate = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
-  // const [selectedOption, setSelectedOption] = useState("");
   const [displayProperty, setDisplayProperty] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredAssets, setFilteredAssets] = useState([]);
+  const [filteredUserAssets, setFilteredUserAssets] = useState([]);
   const [assetComp, setAssetComp] = useState(false);
 
   const initialFocusRef = React.useRef();
@@ -42,13 +41,15 @@ const IndividualRealEstate = (props) => {
     const filteredAssets = property.filter((property) =>
       property.name.toLowerCase().includes(searchTerm)
     );
-    setFilteredAssets(filteredAssets);
+    setFilteredUserAssets(filteredAssets);
+    return filteredUserAssets
   };
 
   const handleComp = (property) => {
     if (property.id === "1") {
       setAssetComp(true);
       setDisplayProperty(true);
+      return assetComp
     }
   };
 

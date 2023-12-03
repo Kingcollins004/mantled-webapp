@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import logo from "../assets/svg/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useMediaQuery } from "@chakra-ui/react";
 import menu from "../assets/svg/menu.svg";
 
@@ -63,7 +63,16 @@ const Header = () => {
               fontWeight="500"
               margin="2% 5%"
             >
-              <Link to="/">Home</Link>
+              <NavLink
+                style={({ isActive }) => {
+                  return {
+                    color: isActive ? "#7800F0" : "black",
+                  };
+                }}
+                to="/"
+              >
+                Home
+              </NavLink>
             </Text>
             <Text
               textAlign="center"
@@ -71,7 +80,16 @@ const Header = () => {
               fontWeight="500"
               margin="2% 5%"
             >
-              <Link to="pricing">Pricing</Link>
+              <NavLink
+                style={({ isActive }) => {
+                  return {
+                    color: isActive ? "#7800F0" : "black",
+                  };
+                }}
+                to="/pricing"
+              >
+                Pricing
+              </NavLink>
             </Text>
             <Text
               textAlign="center"
@@ -92,6 +110,7 @@ const Header = () => {
               bgGradient="linear(to-r, #7800F0, #00A088)"
               padding="5% 10%"
               color="white"
+              _hover="none"
             >
               <Link to="/getstarted">Get Started</Link>
             </Button>

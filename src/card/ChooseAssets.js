@@ -15,19 +15,23 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import RealEstate from "./RealEstate";
+import { useDispatch } from 'react-redux';
+import {setAssets} from "../Feature/assetSlice"
 
 const ChooseAssets = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [displayModal, setDisplayModal] = useState(true);
+  const dispatch = useDispatch();
+
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    dispatch(setAssets({ title: option })); // Corrected payload
   };
+  
 
   const handleNavigation = () => {
-    if (selectedOption === "Real Estate") {
-      // window.location.href = "/realEstate";
-      console.log("selected real estate");
-      setDisplayModal(false);
+    if (selectedOption === "Real Estate" || selectedOption === "Tangible Assets" || selectedOption === "Financial Assets" || selectedOption === "Personal Effects" || selectedOption === "Debts and Liabilities" || selectedOption === "Others") {
+      setDisplayModal(false)
     }
   };
   return (
@@ -50,7 +54,7 @@ const ChooseAssets = () => {
               boxShadow="0px 3px 15px #F5F0FF;"
               textAlign="center"
               width="148px"
-              height="148px"
+              height="168px"
               backgroundColor={
                 selectedOption === "Real Estate" ? "#7800F0" : "white"
               }
@@ -89,7 +93,7 @@ const ChooseAssets = () => {
               boxShadow="0px 3px 15px #F5F0FF;"
               textAlign="center"
               width="148px"
-              height="148px"
+              height="168px"
               backgroundColor={
                 selectedOption === "Tangible Assets" ? "#7800F0" : "white"
               }
@@ -127,7 +131,7 @@ const ChooseAssets = () => {
               boxShadow="0px 3px 15px #F5F0FF;"
               textAlign="center"
               width="148px"
-              height="148px"
+              height="168px"
               backgroundColor={
                 selectedOption === "Financial Assets" ? "#7800F0" : "white"
               }
@@ -169,11 +173,11 @@ const ChooseAssets = () => {
               boxShadow="0px 3px 15px #F5F0FF;"
               textAlign="center"
               width="148px"
-              height="148px"
+              height="168px"
               backgroundColor={
-                selectedOption === "Personal Effect" ? "#7800F0" : "white"
+                selectedOption === "Personal Effects" ? "#7800F0" : "white"
               }
-              onClick={() => handleOptionClick("Personal Effect")}
+              onClick={() => handleOptionClick("Personal Effects")}
               border="1px solid #F8F8F8"
               borderRadius="22px"
             >
@@ -184,14 +188,14 @@ const ChooseAssets = () => {
                 height="63px"
                 borderRadius="50%"
                 backgroundColor={
-                  selectedOption === "Personal Effect" ? "white" : "#F5F0FF"
+                  selectedOption === "Personal Effects" ? "white" : "#F5F0FF"
                 }
               >
                 <Image width="40%" src={carIcon} />
               </Box>
               <Spacer />
               <Text
-                color={selectedOption === "Personal Effect" ? "white" : "black"}
+                color={selectedOption === "Personal Effects" ? "white" : "black"}
                 fontSize="14px"
                 marginTop="15%"
                 padding={{base: "2%"}}
@@ -209,9 +213,9 @@ const ChooseAssets = () => {
               boxShadow="0px 3px 15px #F5F0FF;"
               textAlign="center"
               width="148px"
-              height="148px"
-              backgroundColor={selectedOption === "Debt" ? "#7800F0" : "white"}
-              onClick={() => handleOptionClick("Debt")}
+              height="168px"
+              backgroundColor={selectedOption === "Debts and Liabilities" ? "#7800F0" : "white"}
+              onClick={() => handleOptionClick("Debts and Liabilities")}
               border="1px solid #F8F8F8"
               borderRadius="22px"
             >
@@ -222,14 +226,14 @@ const ChooseAssets = () => {
                 height="63px"
                 borderRadius="50%"
                 backgroundColor={
-                  selectedOption === "Debt" ? "white" : "#F5F0FF"
+                  selectedOption === "Debts and Liabilities" ? "white" : "#F5F0FF"
                 }
               >
                 <Image width="40%" src={debtIcon} />
               </Box>
               <Spacer />
               <Text
-                color={selectedOption === "Debt" ? "white" : "black"}
+                color={selectedOption === "Debts and Liabilities" ? "white" : "black"}
                 fontSize="14px"
                 marginTop="15%"
               >
@@ -246,7 +250,7 @@ const ChooseAssets = () => {
               boxShadow="0px 3px 15px #F5F0FF;"
               textAlign="center"
               width="148px"
-              height="148px"
+              height="168px"
               backgroundColor={
                 selectedOption === "Others" ? "#7800F0" : "white"
               }
@@ -296,9 +300,9 @@ const ChooseAssets = () => {
         </div>
       ) : (
         <div>
-          {selectedOption === "Real Estate" ? (
+          {selectedOption ? (
             <div>
-              <RealEstate goBack={() => setDisplayModal(true)} />
+              <RealEstate selectedOption={selectedOption} goBack={() => setDisplayModal(true)} />
             </div>
           ) : (
             <div>not real estate</div>
