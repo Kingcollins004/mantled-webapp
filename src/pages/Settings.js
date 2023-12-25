@@ -146,34 +146,9 @@ const Settings = () => {
 
   return (
     <div>
-      <Flex
-        width="100%"
-        height="100vh"
-        backgroundColor="#FCFCFC"
-        padding="0px 2%"
-      >
-        <Sidebar />
-
-        <Box width="100%" padding="2% 2% ">
-          <Box width="100%">
-            <Flex width="100%">
-              <Image
-                borderRadius="50%"
-                height="60px"
-                width="60px"
-                src={avatar}
-              />
-              <Box width="100%" marginLeft="1%">
-                <Text fontWeight="600" color="#535353" fontSize="22px">
-                  Welcome Back, David Haruna
-                </Text>
-                <Text fontSize="14px">Monthly Premium User</Text>
-              </Box>
-            </Flex>
-          </Box>
-          {renderContent()}
-        </Box>
-      </Flex>
+      <Box width="100%" padding="2% 2% ">
+        {renderContent()}
+      </Box>
     </div>
   );
 };
