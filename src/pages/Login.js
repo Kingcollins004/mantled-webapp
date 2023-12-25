@@ -34,7 +34,6 @@ function Login() {
   const [userToken, setUserToken] = useState("");
   const dispatch = useDispatch();
 
-
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -93,7 +92,8 @@ function Login() {
           // other data
         };
         dispatch(setUser(userData));
-  
+        console.log(userData);
+
         // Navigate to the dashboard
         navigate("/dashboard");
       }

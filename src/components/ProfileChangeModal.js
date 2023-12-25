@@ -2,10 +2,31 @@ import React, { useState } from "react";
 import { Flex, Image, Box, Text, Button } from "@chakra-ui/react";
 import danger from "../assets/svg/danger.svg";
 import SuccessCard from "../card/SuccessCard";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
-const ProfileChangeModal = () => {
+const url = "https://sentinel-production.up.railway.app/api/v1/lawyers/";
+
+const ProfileChangeModal = (props) => {
   const [displayModal, setDisplayModal] = useState(false);
-  const handleProfileChange = () => {
+  const userData = useSelector((state) => state.user);
+  const handleProfileChange = async (e) => {
+    e.preventDefault();
+    try {
+      const resp = await axios.post(url, {
+        name: props.name,
+        email: props.email,
+        number: props.phoneNumber,
+      }, {
+        headers: {
+          Authorization: userData.token
+        }
+      });
+      const { data } = resp;
+      console.log(data);
+    } catch (error) {
+      console.log(error.response);
+    }
     setDisplayModal(true);
   };
   return (

@@ -20,13 +20,27 @@ import avatar from "../assets/svg/lawyer.svg";
 import bin from "../assets/svg/bin.svg";
 
 const Lawyer = () => {
-  const [name] = useState("David Haruna");
-  const [email] = useState("thispeople@gmail.com");
-  const [number] = useState("+23498389829292");
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [number, setNumber] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
-  const finalRef = React.useRef(null);
 
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleNumberChange = (e) => {
+    setNumber(e.target.value);
+  };
+
+  const handleLayerCreation = () => {
+    onOpen();
+    console.log(name, email, number);
+  };
+  const finalRef = React.useRef(null);
 
   return (
     <Flex
@@ -38,7 +52,13 @@ const Lawyer = () => {
       flexDirection="column"
       padding="5% 0"
     >
-      <Flex alignItems="center" width="100%" textAlign="center" marginTop="2%" paddingX="5%">
+      <Flex
+        alignItems="center"
+        width="100%"
+        textAlign="center"
+        marginTop="2%"
+        paddingX="5%"
+      >
         <Flex
           flex="1.4"
           flexDirection="column"
@@ -52,7 +72,7 @@ const Lawyer = () => {
           </Text>
         </Flex>
 
-        <Box flex="1"  alignItems="flex-end">
+        <Box flex="1" alignItems="flex-end">
           <Image float="right" marginLeft="0%" width="17%" src={bin} />
         </Box>
       </Flex>
@@ -80,7 +100,9 @@ const Lawyer = () => {
               focusBorder="none"
               border="none"
               width="100%"
-              placeholder={name}
+              placeholder="Femi Ebuka"
+              value={name}
+              onChange={handleNameChange}
               padding="3%"
               type="text"
             />
@@ -105,7 +127,9 @@ const Lawyer = () => {
               focusBorder="none"
               border="none"
               width="100%"
-              placeholder={email}
+              placeholder="example@youremail.com"
+              value={email}
+              onChange={handleEmailChange}
               padding="3%"
               type="email"
             />
@@ -130,7 +154,9 @@ const Lawyer = () => {
               focusBorder="none"
               border="none"
               width="100%"
-              placeholder={number}
+              placeholder="+2348027362543"
+              value={number}
+              onChange={handleNumberChange}
               padding="3%"
               type="number"
             />
@@ -149,7 +175,7 @@ const Lawyer = () => {
             backgroundColor="#7800F0"
             color="white"
             padding="4%"
-            onClick={onOpen}
+            onClick={handleLayerCreation}
           >
             Update
           </Button>
@@ -165,7 +191,11 @@ const Lawyer = () => {
               marginTop="15%"
             >
               <ModalBody>
-                <ProfileChangeModal />
+                <ProfileChangeModal
+                  name={name}
+                  email={email}
+                  phoneNumber={phone}
+                />
               </ModalBody>
             </ModalContent>
           </Modal>
