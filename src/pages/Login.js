@@ -15,6 +15,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setToken, setUser } from "../redux/features/userSlice";
 import { LoginApi } from "../redux/axios/apis/user";
+import useInputValidation from "../hooks/validateInput";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PWD_REGEX = /^.{8,24}$/;
@@ -23,48 +24,31 @@ function Login() {
   const userRef = useRef();
 
   const [email, setEmail] = useState("");
-  const [validEmail, setValidemail] = useState(false);
   const [password, setPassword] = useState("");
-  const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
+  const validEmail = useInputValidation(email, EMAIL_REGEX)
+  const validPwd = useInputValidation(password, PWD_REGEX)
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  useEffect(() => {
-    const result = EMAIL_REGEX.test(email);
-    setValidemail(result);
-  }, [email]);
-
-  useEffect(() => {
-    const result = PWD_REGEX.test(password);
-    setValidPwd(result);
-  }, [password]);
+ 
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const v1 = PWD_REGEX.test(password);
-    const v2 = EMAIL_REGEX.test(email);
-
-    if (!v1 && !v2) {
+   
+    if (!validEmail && !validPwd) {
       toast.error("Please input your Email and Password");
       return;
-    } else if (!v1) {
+    } else if (!validPwd) {
       toast.error("Please Input your Password");
-    } else if (!v2) {
+    } else if (!validEmail) {
       toast.error("Please Input your Email");
     }
 
@@ -145,7 +129,7 @@ function Login() {
                 type="email"
                 placeholder="Email Address"
                 value={email}
-                onChange={handleEmailChange}
+                onChange={(e) =>  setEmail(e.target.value)}
                 paddingLeft="35px"
                 id="email"
                 ref={userRef}
@@ -175,7 +159,7 @@ function Login() {
               paddingLeft={{ base: "30px" }}
               type={showPassword ? "text" : "password"}
               id="password"
-              onChange={handlePasswordChange}
+              onChange={(e) =>  setPassword(e.target.value)}
               value={password}
               required
               aria-invalid={validPwd ? "false" : "true"}
