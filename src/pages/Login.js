@@ -12,14 +12,12 @@ import eye from "../assets/svg/eye.svg";
 import eyeOff from "../assets/svg/eye-off.svg";
 import "../App.css";
 import { Toaster, toast } from "react-hot-toast";
-import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUser } from "../Feature/actions";
+import { setToken, setUser } from "../redux/features/userSlice";
+import { LoginApi } from "../redux/axios/apis/user";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PWD_REGEX = /^.{8,24}$/;
-
-const url = "https://sentinel-production.up.railway.app/api/v1/users/signIn";
 
 function Login() {
   const userRef = useRef();
@@ -30,8 +28,6 @@ function Login() {
   const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [userToken, setUserToken] = useState("");
   const dispatch = useDispatch();
 
   const handleEmailChange = (e) => {
@@ -63,40 +59,28 @@ function Login() {
     const v1 = PWD_REGEX.test(password);
     const v2 = EMAIL_REGEX.test(email);
 
+    if (!v1 && !v2) {
+      toast.error("Please input your Email and Password");
+      return;
+    } else if (!v1) {
+      toast.error("Please Input your Password");
+    } else if (!v2) {
+      toast.error("Please Input your Email");
+    }
+
     try {
-      // Assuming you have defined `url`, `email`, and `password` somewhere before this code
-      const resp = await axios.post(url, {
+      const formBody = {
         email,
         password,
-      });
+      };
+      const resp = await LoginApi(formBody);
       const { data } = resp;
-      console.log("API Response:", data);
-      const userName = data?.data?.user?.fullName;
-      const userToken = data?.token;
-      setUserName(userName);
-      setUserToken(userToken);
-      console.log(resp);
-      // Assuming you have defined `v1` and `v2` somewhere before this code
-      if (!v1 && !v2) {
-        toast.error("Please input your Email and Password");
-        return;
-      } else if (!v1) {
-        toast.error("Please Input your Password");
-      } else if (!v2) {
-        toast.error("Please Input your Email");
-      } else {
-        // Dispatch user data to the Redux store
-        const userData = {
-          name: userName,
-          token: userToken,
-          // other data
-        };
-        dispatch(setUser(userData));
-        console.log(userData);
+      sessionStorage.setItem("token", data.token);
+      sessionStorage.setItem("user", JSON.stringify(data.data.user));
+      dispatch(setToken(data.token));
+      dispatch(setUser(data.data.user));
 
-        // Navigate to the dashboard
-        navigate("/dashboard");
-      }
+      navigate("/dashboard");
     } catch (error) {
       console.log(error.response);
     }

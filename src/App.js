@@ -19,6 +19,7 @@ import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 import ContactUs from "./pages/ContactUs";
 import Settings from "./pages/Settings";
+import DashboardLayout from "./Layouts/DashboardLayout";
 
 function App() {
   const theme = extendTheme({
@@ -39,7 +40,10 @@ function App() {
           <Route element={<Pricing />} path="/pricing" />
           <Route element={<GetStarted />} path="/getstarted" />
           <Route element={<Login />} path="/login" />
-          <Route element={<AccountVerification />} path="/accountverification" />
+          <Route
+            element={<AccountVerification />}
+            path="/accountverification"
+          />
           <Route element={<Collaborations />} path="/collaborations" />
           <Route element={<Notifications />} path="/notifications" />
           <Route element={<Profile />} path="/profile" />
@@ -64,13 +68,15 @@ function App() {
             element={<RegistrationPageThree />}
             path="profile-registration-three"
           />
-          <Route element={<Dashboard />} path="dashboard" />
-          <Route element={<MyVault />} path="/myvault" />
-          <Route element={<Settings />} path="/settings" />
-          <Route
-            element={<SubscriptionPayment />}
-            path="/profile-registration-three-2"
-          />
+          <Route path="" element={<DashboardLayout />}>
+            <Route element={<Dashboard />} path="dashboard" />
+            <Route element={<MyVault />} path="/myvault" />
+            <Route element={<Settings />} path="/settings" />
+            <Route
+              element={<SubscriptionPayment />}
+              path="/profile-registration-three-2"
+            />
+          </Route>
         </Routes>
       </Router>
     </ChakraProvider>

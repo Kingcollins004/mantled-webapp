@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import RealEstate from "./RealEstate";
 import { useDispatch } from 'react-redux';
-import {setAssets} from "../Feature/assetSlice"
+// import {setAssets} from "../Feature/assetSlice"
 
 const ChooseAssets = () => {
   const [selectedOption, setSelectedOption] = useState("");
@@ -25,7 +25,7 @@ const ChooseAssets = () => {
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
-    dispatch(setAssets({ title: option })); // Corrected payload
+    // dispatch(setAssets({ title: option })); 
   };
   
 

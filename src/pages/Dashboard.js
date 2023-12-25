@@ -11,27 +11,11 @@ import { useSelector } from "react-redux";
 const Dashboard = () => {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
   const userData = useSelector((state) => state.user);
-  console.log("User Data:", userData);
   return (
     <div>
       <Flex width="100%" height="100vh" backgroundColor="#FCFCFC">
         {isMobile ? (
-          <Box width="100%" padding="2% 2% ">
-            <Box width="100%">
-              <Flex width="100%" justifyContent="center" alignItems="center">
-                <Sidebar />
-                <Box width="100%">
-                  <Text
-                    fontWeight="600"
-                    color="#535353"
-                    fontSize={{ base: "16px", md: "22px" }}
-                  >
-                    Welcome Back, {userData.name}
-                  </Text>
-                  <Text fontSize="14px">Monthly Premium User</Text>
-                </Box>
-              </Flex>
-            </Box>
+          <Box width="100%">
             <Flex flexWrap={{ base: "wrap", md: "nowrap" }}>
               <Box
                 width="225px"
@@ -165,165 +149,135 @@ const Dashboard = () => {
             <AssetModal />
           </Box>
         ) : (
-          <Flex
-            width="100%"
-            height="100vh"
-            backgroundColor="#FCFCFC"
-            padding="0px 2%"
-          >
-            <Sidebar />
-            <Box width="100%" padding="2% 2% ">
-              <Box width="100%">
-                <Flex width="100%">
-                  <Image
-                    borderRadius="50%"
-                    height={{ base: "40px", md: "60px" }}
-                    width={{ base: "40px", md: "60px" }}
-                    src={avatar}
-                  />
-                  <Box width="100%" marginLeft="1%">
-                    {userData && (
-                      <Text
-                        fontWeight="600"
-                        color="#535353"
-                        fontSize={{ base: "16px", md: "22px" }}
-                      >
-                        Welcome Back, {userData.name}
-                      </Text>
-                    )}
-                    <Text fontSize="14px">Monthly Premium User</Text>
-                  </Box>
+          <Box width="100%">
+            <Flex flexWrap={{ base: "wrap", md: "nowrap" }}>
+              <Box
+                width="225px"
+                height="135px"
+                padding="32px"
+                borderRadius="20px"
+                backgroundColor="#ffffff"
+                flex="1"
+                margin="3% 1%"
+              >
+                <Flex borderBottom="1px solid lightgrey" paddingBottom="5%">
+                  <Text fontSize="12px" fontWeight="500" flex="1">
+                    Total Assets Added
+                  </Text>
+                  <Image src={arrowIcon} />
+                </Flex>
+                <Flex>
+                  <Text fontSize="44px" color="#121936">
+                    18
+                  </Text>
+                  <Text
+                    fontSize="14px"
+                    color="#979DAC"
+                    marginTop="6%"
+                    marginLeft="15px"
+                  >
+                    In the last
+                    <br />
+                    30 days
+                  </Text>
                 </Flex>
               </Box>
-              <Flex flexWrap={{ base: "wrap", md: "nowrap" }}>
-                <Box
-                  width="225px"
-                  height="135px"
-                  padding="32px"
-                  borderRadius="20px"
-                  backgroundColor="#ffffff"
-                  flex="1"
-                  margin="3% 1%"
-                >
-                  <Flex borderBottom="1px solid lightgrey" paddingBottom="5%">
-                    <Text fontSize="12px" fontWeight="500" flex="1">
-                      Total Assets Added
-                    </Text>
-                    <Image src={arrowIcon} />
-                  </Flex>
-                  <Flex>
-                    <Text fontSize="44px" color="#121936">
-                      18
-                    </Text>
-                    <Text
-                      fontSize="14px"
-                      color="#979DAC"
-                      marginTop="6%"
-                      marginLeft="15px"
-                    >
-                      In the last
-                      <br />
-                      30 days
-                    </Text>
-                  </Flex>
-                </Box>
-                <Box
-                  width="225px"
-                  height="135px"
-                  padding="32px"
-                  borderRadius="20px"
-                  backgroundColor="#ffffff"
-                  flex="1"
-                  margin="3% 1%"
-                >
-                  <Flex borderBottom="1px solid lightgrey" paddingBottom="5%">
-                    <Text fontSize="12px" fontWeight="500" flex="1">
-                      Total Collaboration
-                    </Text>
-                    <Image src={arrowIcon} />
-                  </Flex>
-                  <Flex>
-                    <Text fontSize="44px" color="#121936">
-                      98
-                    </Text>
-                    <Text
-                      fontSize="14px"
-                      color="#979DAC"
-                      marginTop="6%"
-                      marginLeft="15px"
-                    >
-                      In the last
-                      <br />
-                      30 days
-                    </Text>
-                  </Flex>
-                </Box>
-                <Box
-                  width="225px"
-                  height="135px"
-                  padding="32px"
-                  borderRadius="20px"
-                  backgroundColor="#ffffff"
-                  flex="1"
-                  margin="3% 1%"
-                >
-                  <Flex borderBottom="1px solid lightgrey" paddingBottom="5%">
-                    <Text fontSize="12px" fontWeight="500" flex="1">
-                      Acceepted Invites
-                    </Text>
-                    <Image src={arrowIcon} />
-                  </Flex>
-                  <Flex>
-                    <Text fontSize="44px" color="#121936">
-                      25
-                    </Text>
-                    <Text
-                      fontSize="14px"
-                      color="#979DAC"
-                      marginTop="6%"
-                      marginLeft="15px"
-                    >
-                      In the last
-                      <br />
-                      30 days
-                    </Text>
-                  </Flex>
-                </Box>
-                <Box
-                  width="225px"
-                  height="135px"
-                  padding="32px"
-                  borderRadius="20px"
-                  backgroundColor="#ffffff"
-                  flex="1"
-                  margin="3% 1%"
-                >
-                  <Flex borderBottom="1px solid lightgrey" paddingBottom="5%">
-                    <Text fontSize="12px" fontWeight="500" flex="1">
-                      Pending Invites
-                    </Text>
-                    <Image src={arrowIcon} />
-                  </Flex>
-                  <Flex>
-                    <Text fontSize="44px" color="#121936">
-                      11
-                    </Text>
-                    <Text
-                      fontSize="14px"
-                      color="#979DAC"
-                      marginTop="6%"
-                      marginLeft="15px"
-                    >
-                      In the last
-                      <br />
-                      30 days
-                    </Text>
-                  </Flex>
-                </Box>
-              </Flex>
-              <AssetModal />
-            </Box>
-          </Flex>
+              <Box
+                width="225px"
+                height="135px"
+                padding="32px"
+                borderRadius="20px"
+                backgroundColor="#ffffff"
+                flex="1"
+                margin="3% 1%"
+              >
+                <Flex borderBottom="1px solid lightgrey" paddingBottom="5%">
+                  <Text fontSize="12px" fontWeight="500" flex="1">
+                    Total Collaboration
+                  </Text>
+                  <Image src={arrowIcon} />
+                </Flex>
+                <Flex>
+                  <Text fontSize="44px" color="#121936">
+                    98
+                  </Text>
+                  <Text
+                    fontSize="14px"
+                    color="#979DAC"
+                    marginTop="6%"
+                    marginLeft="15px"
+                  >
+                    In the last
+                    <br />
+                    30 days
+                  </Text>
+                </Flex>
+              </Box>
+              <Box
+                width="225px"
+                height="135px"
+                padding="32px"
+                borderRadius="20px"
+                backgroundColor="#ffffff"
+                flex="1"
+                margin="3% 1%"
+              >
+                <Flex borderBottom="1px solid lightgrey" paddingBottom="5%">
+                  <Text fontSize="12px" fontWeight="500" flex="1">
+                    Acceepted Invites
+                  </Text>
+                  <Image src={arrowIcon} />
+                </Flex>
+                <Flex>
+                  <Text fontSize="44px" color="#121936">
+                    25
+                  </Text>
+                  <Text
+                    fontSize="14px"
+                    color="#979DAC"
+                    marginTop="6%"
+                    marginLeft="15px"
+                  >
+                    In the last
+                    <br />
+                    30 days
+                  </Text>
+                </Flex>
+              </Box>
+              <Box
+                width="225px"
+                height="135px"
+                padding="32px"
+                borderRadius="20px"
+                backgroundColor="#ffffff"
+                flex="1"
+                margin="3% 1%"
+              >
+                <Flex borderBottom="1px solid lightgrey" paddingBottom="5%">
+                  <Text fontSize="12px" fontWeight="500" flex="1">
+                    Pending Invites
+                  </Text>
+                  <Image src={arrowIcon} />
+                </Flex>
+                <Flex>
+                  <Text fontSize="44px" color="#121936">
+                    11
+                  </Text>
+                  <Text
+                    fontSize="14px"
+                    color="#979DAC"
+                    marginTop="6%"
+                    marginLeft="15px"
+                  >
+                    In the last
+                    <br />
+                    30 days
+                  </Text>
+                </Flex>
+              </Box>
+            </Flex>
+            <AssetModal />
+          </Box>
         )}
       </Flex>
     </div>

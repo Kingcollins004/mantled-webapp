@@ -44,12 +44,12 @@ const MyVault = () => {
   const handleSwitchB = (option) => {
     setSelectedOption(option);
     setDisplayModal(false);
-    return selectedOption
+    return selectedOption;
   };
   const handleSwitchA = (option) => {
     setSelectedOption(option);
     setDisplayModal(true);
-    return selectedOption
+    return selectedOption;
   };
 
   const assets = [
@@ -92,7 +92,7 @@ const MyVault = () => {
       asset.name.toLowerCase().includes(searchTerm)
     );
     setFilteredUserAssets(filteredAssets);
-    return filteredUserAssets
+    return filteredUserAssets;
   };
 
   const handleComp = (asset) => {
@@ -103,55 +103,10 @@ const MyVault = () => {
 
   return (
     <div>
-      <Flex
-        width="100%"
-        height="100vh"
-        backgroundColor="#FCFCFC"
-        padding="0px 2%"
-      >
-        <Box display={{ base: "none", md: "flex" }}>
-          <Sidebar />
-        </Box>
+     
 
         <Box width="100%" padding="2% 2% ">
-          {isMobile ? (
-            <Box width="100%">
-              <Flex width="100%" justifyContent="center" alignItems="center">
-                <Sidebar />
-                <Box width="100%">
-                  <Text
-                    fontWeight="600"
-                    color="#535353"
-                    fontSize={{ base: "16px", md: "22px" }}
-                  >
-                    Welcome Back, David Haruna
-                  </Text>
-                  <Text fontSize="14px">Monthly Premium User</Text>
-                </Box>
-              </Flex>
-            </Box>
-          ) : (
-            <Box width="100%">
-              <Flex width="100%">
-                <Image
-                  borderRadius="50%"
-                  height={{ base: "40px", md: "60px" }}
-                  width={{ base: "40px", md: "60px" }}
-                  src={avatar}
-                />
-                <Box width="100%" marginLeft="1%">
-                  <Text
-                    fontWeight="600"
-                    color="#535353"
-                    fontSize={{ base: "16px", md: "22px" }}
-                  >
-                    Welcome Back, David Haruna
-                  </Text>
-                  <Text fontSize="14px">Monthly Premium User</Text>
-                </Box>
-              </Flex>
-            </Box>
-          )}
+         
 
           {assetComp ? (
             <RealEstateAssets />
@@ -457,7 +412,6 @@ const MyVault = () => {
             </div>
           )}
         </Box>
-      </Flex>
     </div>
   );
 };

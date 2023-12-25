@@ -5,9 +5,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
 import "./index.css";
-import { persistor, store } from "./Store";
+import store from "./redux/store";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
 
 
 
@@ -16,12 +15,10 @@ const root = ReactDOM.createRoot(container);
 
 root.render(
   <Provider store={store}>
-  <PersistGate loading={null} persistor={persistor}>
     <StrictMode>
       <ColorModeScript />
       <App />
     </StrictMode>
-    </PersistGate>
   </Provider>
 );
 
