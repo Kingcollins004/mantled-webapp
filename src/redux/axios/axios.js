@@ -56,15 +56,23 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const originalRequest = error?.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    const originalRequest = error.config;
+    
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+   
       dispatch(setToken(null));
       sessionStorage.clear();
       window.location.href = "/signin";
+      
+      originalRequest._retry = true;
 
-      return Promise.reject(error);
+      // Retry the original request
+      return axiosInstance(originalRequest);
     }
+
+    return Promise.reject(error);
   }
 );
+
 
 export default axiosInstance;

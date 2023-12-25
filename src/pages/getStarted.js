@@ -1,14 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Flex,
-  Text,
-  Image,
-  Button,
-  Input,
-} from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Button, Input } from "@chakra-ui/react";
 import logo from "../assets/svg/logo.svg";
 import line from "../assets/svg/Line.svg";
 import emailIcon from "../assets/svg/envelope-icon.svg";
@@ -21,16 +13,21 @@ import "../App.css";
 import country from "../assets/svg/nigeria.svg";
 import eye from "../assets/svg/eye.svg";
 import eyeOff from "../assets/svg/eye-off.svg";
-import { Toaster, toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { css } from "@emotion/react";
+import useInputValidation from "../hooks/validateInput";
+import { SignUpApi } from "../redux/axios/apis/user";
+import ErrorHandler from "../redux/axios/Utils/ErrorHandler";
+import { useDispatch } from "react-redux";
+import { setToken, setUser } from "../redux/features/userSlice";
 
 const USER_REGEX = /^[A-z][A-z0-9-_ ]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[*!@#$%]).{8,24}$/;
 const PHONE_REGEX = /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/i;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const url = "https://sentinel-production.up.railway.app/api/v1/users/signup";
 
 function GetStarted() {
+  const dispatch = useDispatch();
   const autofillStyles = css`
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0 30px white inset;
@@ -42,16 +39,16 @@ function GetStarted() {
   const [loading, setLoading] = useState(false);
 
   const [fullName, setFullName] = useState("");
-  const [validName, setValidName] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
 
   const [email, setEmail] = useState("");
-  const [validEmail, setValidemail] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [validPhoneNumber, setValidPhoneNumber] = useState(false);
   const [password, setPassword] = useState("");
-  const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
+  const isValidName = useInputValidation(fullName, USER_REGEX);
+  const isValidEmail = useInputValidation(email, EMAIL_REGEX);
+  const isValidPhone = useInputValidation(phoneNumber, PHONE_REGEX);
+  const isValidPwd = useInputValidation(password, PWD_REGEX);
 
   const [show, setShow] = useState(false);
 
@@ -63,50 +60,11 @@ function GetStarted() {
     userRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    const result = USER_REGEX.test(fullName);
-    setValidName(result);
-  }, [fullName]);
-
-  useEffect(() => {
-    const result = PHONE_REGEX.test(phoneNumber);
-    setValidPhoneNumber(result);
-  }, [phoneNumber]);
-
-  useEffect(() => {
-    const result = EMAIL_REGEX.test(email);
-    setValidemail(result);
-  }, [email]);
-
-  useEffect(() => {
-    const result = PWD_REGEX.test(password);
-    setValidPwd(result);
-  }, [password]);
-
-  const handleFullnameChange = (e) => {
-    setFullName(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
-  };
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isValidName = USER_REGEX.test(fullName);
-    const isValidPwd = PWD_REGEX.test(password);
-    const isValidPhone = PHONE_REGEX.test(phoneNumber);
-    const isValidEmail = EMAIL_REGEX.test(email);
+    console.log(isValidEmail, isValidName, isValidPhone, isValidPwd);
 
     if (!isValidName || !isValidPwd || !isValidPhone || !isValidEmail) {
       toast.error("Fill in your information to sign up");
@@ -115,38 +73,23 @@ function GetStarted() {
 
     try {
       setLoading(true);
-      const resp = await axios.post(url, {
+
+      const resp = await SignUpApi({
         fullName,
         email,
         phoneNumber,
         password,
       });
-      console.log(resp);
       toast.success("Success");
+      const { data } = resp;
+      sessionStorage.setItem("token", data.token);
+      sessionStorage.setItem("user", JSON.stringify(data.data.user));
+      dispatch(setToken(data.token));
+      dispatch(setUser(data.data.user));
       navigate("/accountverification", { state: { email } });
     } catch (error) {
-      console.error(error);
-
-      if (error.response) {
-        const { data, status } = error.response;
-        console.error(`Error ${status}:`, data);
-
-        if (status === 409 && data.error === "This email is already in use") {
-          // Provide a user-friendly message for email already in use
-          toast.error(
-            "This email address is already in use. Please use a different email."
-          );
-        } else {
-          // Provide a generic error message for other cases
-          toast.error("An error occurred while signing up. Please try again.");
-        }
-      } else if (error.request) {
-        console.error("No response received from the server.");
-        toast.error("No response received from the server. Please try again.");
-      } else {
-        console.error("Error setting up the request:", error.message);
-        toast.error("An error occurred. Please try again.");
-      }
+      console.log(error);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -156,7 +99,6 @@ function GetStarted() {
     <div>
       <Box width="100%">
         <Flex direction={{ base: "column", md: "row" }}>
-          <Toaster position="top-center" reverseOrder={false} />
           <Box
             width={{ base: "100%", md: "50%" }}
             padding={{ base: "40px 20px 20px 20px", md: "40px 80px 20px 80px" }}
@@ -218,12 +160,12 @@ function GetStarted() {
                     type="text"
                     placeholder="Emeka Ayobami Yakubu"
                     value={fullName}
-                    onChange={handleFullnameChange}
+                    onChange={(e) => setFullName(e.target.value)}
                     id="username"
                     ref={userRef}
                     autoComplete="off"
                     required
-                    aria-invalid={validName ? "false" : "true"}
+                    aria-invalid={isValidName ? "false" : "true"}
                     aria-describedby="uidnote"
                     onFocus={() => setUserFocus(true)}
                     onBlur={() => setUserFocus(false)}
@@ -237,7 +179,7 @@ function GetStarted() {
                   fontSize="12px"
                   id="uidnote"
                   className={
-                    userFocus && fullName && !validName
+                    userFocus && fullName && !isValidName
                       ? "instructions"
                       : "offscreen"
                   }
@@ -274,12 +216,12 @@ function GetStarted() {
                       type="email"
                       placeholder="Email Address"
                       value={email}
-                      onChange={handleEmailChange}
+                      onChange={(e) => setEmail(e.target.value)}
                       paddingLeft="35px"
                       id="email"
                       ref={userRef}
                       required
-                      aria-invalid={validEmail ? "false" : "true"}
+                      aria-invalid={isValidEmail ? "false" : "true"}
                       border="none"
                       focusBorderColor="transparent"
                       focusBorder="0"
@@ -324,11 +266,11 @@ function GetStarted() {
                       type="number"
                       placeholder="Phone number"
                       value={phoneNumber}
-                      onChange={handlePhoneNumberChange}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
                       id="phoneNumber"
                       ref={userRef}
                       required
-                      aria-invalid={validPhoneNumber ? "false" : "true"}
+                      aria-invalid={isValidPhone ? "false" : "true"}
                       border="none"
                       focusBorderColor="transparent"
                       focusBorder="0"
@@ -356,10 +298,10 @@ function GetStarted() {
                     type={show ? "text" : "password"}
                     placeholder="Enter password"
                     id="password"
-                    onChange={handlePasswordChange}
+                    onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     required
-                    aria-invalid={validPwd ? "false" : "true"}
+                    aria-invalid={isValidPwd ? "false" : "true"}
                     aria-describedby="pwdnote"
                     onFocus={() => setPwdFocus(true)}
                     onBlur={() => setPwdFocus(false)}
@@ -387,7 +329,7 @@ function GetStarted() {
                 <p
                   id="pwdnote"
                   className={
-                    pwdFocus && !validPwd ? "instructions" : "offscreen"
+                    pwdFocus && !isValidPwd ? "instructions" : "offscreen"
                   }
                 >
                   8 to 24 characters.

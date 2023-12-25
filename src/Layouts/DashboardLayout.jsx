@@ -16,8 +16,6 @@ const DashboardLayout = () => {
     }
   }, [navigate, token]);
 
-  console.log(user);
-
   return (
     <>
       {token && (

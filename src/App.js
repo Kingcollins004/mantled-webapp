@@ -20,6 +20,7 @@ import Profile from "./pages/Profile";
 import ContactUs from "./pages/ContactUs";
 import Settings from "./pages/Settings";
 import DashboardLayout from "./Layouts/DashboardLayout";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const theme = extendTheme({
@@ -34,6 +35,7 @@ function App() {
   });
   return (
     <ChakraProvider theme={theme}>
+       <Toaster position="top-center" reverseOrder={false} />
       <Router>
         <Routes>
           <Route element={<HomePage />} path="/" />

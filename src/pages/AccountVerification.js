@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios"; // Import axios for API requests
 import {
   Box,
   Flex,
@@ -9,41 +8,34 @@ import {
   Text,
   HStack,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalCloseButton,
-  ModalBody,
   PinInput,
   PinInputField,
 } from "@chakra-ui/react";
 import logo from "../assets/svg/logo.svg";
 import backArrow from "../assets/svg/back-arrow.svg";
 import "../App.css";
-
-const url =
-  "https://sentinel-production.up.railway.app/api/v1/users/sendemailverificationToken";
+import { SendVerifyMailApi, VerifyMailApi } from "../redux/axios/apis/user";
+import ErrorHandler from "../redux/axios/Utils/ErrorHandler";
+import toast from "react-hot-toast";
 
 const AccountVerification = () => {
   const [timer, setTimer] = useState(90);
-  const [showModal, setShowModal] = useState(false);
   const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
   const inputContainerRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
   const selectedOption = location.state.email;
 
   const handleVerify = async () => {
     try {
-      const response = await axios.get(url, {
-        email: {selectedOption}, 
-        verificationCode: verificationCode.join(""),
-      });
+      const formBody = {
+        numToken: verificationCode.join(""),
+      };
+      const response = await VerifyMailApi(formBody);
 
-      console.log("Verification response:", response);
-
-      if (response.data.success) {
-        setShowModal(true);
+      if (response.data) {
+        toast.success("Verification Successful.");
         setTimeout(() => {
           window.location.href = "/verification-success";
         }, 1000);
@@ -51,12 +43,26 @@ const AccountVerification = () => {
         console.log("Verification failed");
       }
     } catch (error) {
-      console.error("Error verifying OTP:", error);
+      const err = ErrorHandler(error);
+      toast.error(err.message);
     }
   };
 
-  const closeModal = () => {
-    setShowModal(false);
+  const handleVerifyResend = async () => {
+    try {
+      setLoading(true);
+      const response = await SendVerifyMailApi();
+
+      if (response.data) {
+        setLoading(false);
+        toast.success("Verification Successful.");
+        setTimer(90);
+      }
+    } catch (error) {
+      setLoading(false);
+      const err = ErrorHandler(error);
+      toast.error(err.message);
+    }
   };
 
   useEffect(() => {
@@ -127,8 +133,6 @@ const AccountVerification = () => {
     }
   };
 
-  
-
   return (
     <div>
       <Box height="100vh" backgroundColor="#F6F8FA">
@@ -168,7 +172,7 @@ const AccountVerification = () => {
             color="#707070"
             marginBottom="8%"
           >
-            A 4-digit OTP has been sent to your emaii address 
+            A 4-digit OTP has been sent to your emaii address
             <span className="user-num">{selectedOption}</span>
           </Text>
           <Box marginBottom="8%" ref={inputContainerRef}>
@@ -214,27 +218,17 @@ const AccountVerification = () => {
                 </span>
               </span>
             ) : (
-              <button>Resend OTP</button>
+              <Button
+                bgColor="#fff"
+                cursor="pointer"
+                onClick={() => handleVerifyResend()}
+                isLoading={loading}
+              >
+                Resend OTP
+              </Button>
             )}
           </Box>
         </Box>
-        {/* Modal */}
-        <Modal isOpen={showModal} onClose={closeModal}>
-          <ModalOverlay backgroundColor="rgba(255, 255, 255, 0.1)" />
-          <ModalContent
-            borderRadius="25px"
-            padding="0.5%"
-            backgroundColor="#30CF63"
-            margin="600px 22% 0% 22%"
-          >
-            <ModalBody>
-              <ModalCloseButton marginTop="-5px" color="white" />
-              <Text fontSize={{ base: "12px", md: "16px" }} color="white">
-                Verification Successful.
-              </Text>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
       </Box>
     </div>
   );
