@@ -18,27 +18,36 @@ import { useDisclosure } from "@chakra-ui/react";
 import ProfileChangeModal from "../components/ProfileChangeModal";
 import avatar from "../assets/svg/lawyer.svg";
 import bin from "../assets/svg/bin.svg";
+import ErrorHandler from "../redux/axios/Utils/ErrorHandler";
+import toast from "react-hot-toast";
+import { CreateLawyerApi } from "../redux/axios/apis/lawyer";
 
 const Lawyer = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [number, setNumber] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState(false);
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
+  const handleLayerCreation = async () => {
+    try {
+      const formBody = {
+        lawyerName: name,
+        lawyerEmail: email,
+        lawyerPhoneNumber: number,
+        lawyerAddress: "the king's lounge",
+      };
+      setLoading(true);
+      const response = await CreateLawyerApi(formBody);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const handleNumberChange = (e) => {
-    setNumber(e.target.value);
-  };
-
-  const handleLayerCreation = () => {
-    onOpen();
-    console.log(name, email, number);
+      if (response.data) {
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      const err = ErrorHandler(error);
+      toast.error(err.message);
+    }
   };
   const finalRef = React.useRef(null);
 
@@ -102,7 +111,7 @@ const Lawyer = () => {
               width="100%"
               placeholder="Femi Ebuka"
               value={name}
-              onChange={handleNameChange}
+              onChange={(e) => setName(e.target.value)}
               padding="3%"
               type="text"
             />
@@ -129,7 +138,7 @@ const Lawyer = () => {
               width="100%"
               placeholder="example@youremail.com"
               value={email}
-              onChange={handleEmailChange}
+              onChange={(e) => setEmail(e.target.value)}
               padding="3%"
               type="email"
             />
@@ -156,7 +165,7 @@ const Lawyer = () => {
               width="100%"
               placeholder="+2348027362543"
               value={number}
-              onChange={handleNumberChange}
+              onChange={(e) => setNumber(e.target.value)}
               padding="3%"
               type="number"
             />
@@ -176,6 +185,7 @@ const Lawyer = () => {
             color="white"
             padding="4%"
             onClick={handleLayerCreation}
+            isLoading={loading}
           >
             Update
           </Button>

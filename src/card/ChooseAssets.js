@@ -15,7 +15,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import RealEstate from "./RealEstate";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 // import {setAssets} from "../Feature/assetSlice"
 
 const ChooseAssets = () => {
@@ -25,13 +25,19 @@ const ChooseAssets = () => {
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
-    // dispatch(setAssets({ title: option })); 
+    // dispatch(setAssets({ title: option }));
   };
-  
 
   const handleNavigation = () => {
-    if (selectedOption === "Real Estate" || selectedOption === "Tangible Assets" || selectedOption === "Financial Assets" || selectedOption === "Personal Effects" || selectedOption === "Debts and Liabilities" || selectedOption === "Others") {
-      setDisplayModal(false)
+    if (
+      selectedOption === "Real Estate" ||
+      selectedOption === "Tangible Assets" ||
+      selectedOption === "Financial Assets" ||
+      selectedOption === "Personal Effects" ||
+      selectedOption === "Debts and Liabilities" ||
+      selectedOption === "Others"
+    ) {
+      setDisplayModal(false);
     }
   };
   return (
@@ -163,7 +169,11 @@ const ChooseAssets = () => {
             </Flex>
           </Flex>
 
-          <Flex marginTop="2%" justifyContent="center" padding={{ base: "0 1% 15% 0", md: "0 12% 10%" }}>
+          <Flex
+            marginTop="2%"
+            justifyContent="center"
+            padding={{ base: "0 1% 15% 0", md: "0 12% 10%" }}
+          >
             <Flex
               flexDirection="column"
               justifyContent="center"
@@ -195,10 +205,12 @@ const ChooseAssets = () => {
               </Box>
               <Spacer />
               <Text
-                color={selectedOption === "Personal Effects" ? "white" : "black"}
+                color={
+                  selectedOption === "Personal Effects" ? "white" : "black"
+                }
                 fontSize="14px"
                 marginTop="15%"
-                padding={{base: "2%"}}
+                padding={{ base: "2%" }}
               >
                 Personal Effect
               </Text>
@@ -214,7 +226,9 @@ const ChooseAssets = () => {
               textAlign="center"
               width="148px"
               height="168px"
-              backgroundColor={selectedOption === "Debts and Liabilities" ? "#7800F0" : "white"}
+              backgroundColor={
+                selectedOption === "Debts and Liabilities" ? "#7800F0" : "white"
+              }
               onClick={() => handleOptionClick("Debts and Liabilities")}
               border="1px solid #F8F8F8"
               borderRadius="22px"
@@ -226,14 +240,18 @@ const ChooseAssets = () => {
                 height="63px"
                 borderRadius="50%"
                 backgroundColor={
-                  selectedOption === "Debts and Liabilities" ? "white" : "#F5F0FF"
+                  selectedOption === "Debts and Liabilities"
+                    ? "white"
+                    : "#F5F0FF"
                 }
               >
                 <Image width="40%" src={debtIcon} />
               </Box>
               <Spacer />
               <Text
-                color={selectedOption === "Debts and Liabilities" ? "white" : "black"}
+                color={
+                  selectedOption === "Debts and Liabilities" ? "white" : "black"
+                }
                 fontSize="14px"
                 marginTop="15%"
               >
@@ -302,7 +320,10 @@ const ChooseAssets = () => {
         <div>
           {selectedOption ? (
             <div>
-              <RealEstate selectedOption={selectedOption} goBack={() => setDisplayModal(true)} />
+              <RealEstate
+                selectedOption={selectedOption}
+                goBack={() => setDisplayModal(true)}
+              />
             </div>
           ) : (
             <div>not real estate</div>

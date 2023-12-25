@@ -11,13 +11,17 @@ import {
 import backArrow from "../assets/svg/back-arrow.svg";
 import building from "../assets/svg/buildingIcon.svg";
 import SuccessCard from "./SuccessCard";
+import ErrorHandler from "../redux/axios/Utils/ErrorHandler";
+import toast from "react-hot-toast";
+import { AddCollaboratorApi } from "../redux/axios/apis/asset";
 
-const AddCollabTwo = (props) => {
+const AddCollabTwo = ({ goBack, userData }) => {
   const [allProperties, setAllProperties] = useState(false);
   const [property, setProperty] = useState([]);
   const [displayModal, setDisplayModal] = useState(true);
   const [belowList, setBelowList] = useState(true);
   const [selectedAssets, setSelectedAssets] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (allProperties) {
@@ -48,21 +52,27 @@ const AddCollabTwo = (props) => {
     console.log(event.target.value);
   };
 
-  const handleCheckboxChangeTwo = (event) => {
-    const assetName = event.target.value;
-    setProperty((prevProperty) => {
-      const updatedProperty = prevProperty.map((asset) =>
-        asset.name === assetName
-          ? { ...asset, isChecked: event.target.checked }
-          : asset
-      );
-      return updatedProperty;
-    });
-  };
+  const handleSubmit = async () => {
+    try {
+      const formBody = {
+        email: userData.collabName,
+        fullName: userData.collabEmail,
+        propertyType: userData.assignProp,
+        canViewAll: allProperties,
+        assets: selectedAssets,
+      };
+      setLoading(true);
+      const response = await AddCollaboratorApi(formBody);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setDisplayModal(false);
+      if (response.data) {
+        setLoading(false);
+        setDisplayModal(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      const err = ErrorHandler(error);
+      toast.error(err.message);
+    }
   };
 
   return (
@@ -78,7 +88,7 @@ const AddCollabTwo = (props) => {
             >
               <Image
                 onClick={() => {
-                  props.goBack();
+                  goBack();
                 }}
                 width="4%"
                 marginRight={{ base: "2%", md: "3%" }}
@@ -137,14 +147,12 @@ const AddCollabTwo = (props) => {
                     <input
                       type="checkbox"
                       // checked={allProperties}
-                      checked={
-                        property.find(
-                          (asset) =>
-                            asset.name ===
-                            "Liberty Estate, Laderin, Abeokuta, Ogun State"
-                        )?.isChecked || false
+                      checked={selectedAssets.includes(
+                        "Liberty Estate, Laderin, Abeokuta, Ogun State"
+                      )}
+                      onChange={(e) =>
+                        setSelectedAssets([...selectedAssets, e.target.value])
                       }
-                      onChange={handleCheckboxChangeTwo}
                       value="Liberty Estate, Laderin, Abeokuta, Ogun State"
                     />
                   </Flex>
@@ -162,14 +170,13 @@ const AddCollabTwo = (props) => {
                     <input
                       type="checkbox"
                       // checked={allProperties}
-                      checked={
-                        property.find(
-                          (asset) =>
-                            asset.name ===
-                            "Challenges Mansion, Ibadan, Oyo State"
-                        )?.isChecked || false
+
+                      checked={selectedAssets.includes(
+                        "Challenges Mansion, Ibadan, Oyo State"
+                      )}
+                      onChange={(e) =>
+                        setSelectedAssets([...selectedAssets, e.target.value])
                       }
-                      onChange={handleCheckboxChangeTwo}
                       value="Challenges Mansion, Ibadan, Oyo State"
                     />
                   </Flex>
@@ -186,8 +193,12 @@ const AddCollabTwo = (props) => {
                     <Spacer />
                     <input
                       type="checkbox"
-                      // checked={allProperties}
-                      onChange={handleCheckboxChangeTwo}
+                      checked={selectedAssets.includes(
+                        "Phat Homes, Lekki Phase 2, Lagos State"
+                      )}
+                      onChange={(e) =>
+                        setSelectedAssets([...selectedAssets, e.target.value])
+                      }
                       value="Phat Homes, Lekki Phase 2, Lagos State"
                     />
                   </Flex>
@@ -229,6 +240,7 @@ const AddCollabTwo = (props) => {
                   onClick={handleSubmit}
                   width="100%"
                   borderRadius="10px"
+                  isLoading={loading}
                 >
                   Proceed
                 </Button>

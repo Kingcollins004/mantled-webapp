@@ -1,12 +1,16 @@
-import api from '../axios'
+import api from "../axios";
 
-const GetSourvenirApi = () => {
-    return api.get('/sourvenirItem/Get/All/')
-}
+const GetUserCollaboratorsApi = () => {
+  return api.get("/assets/collaborators");
+};
 
-const AddSourvenirApi = (data) => {
-    return api.post(`/sourvenir/createMany`, data)
-}
+const AddCollaboratorApi = () => {
+    return api.post("/assets/collaborators");
+  };
 
+  const CreateBeneficiaryApi = () => {
+    return api.post("/assets/beneficiary");
+  }
+  
 
-export {GetSourvenirApi, AddSourvenirApi}
+export { GetUserCollaboratorsApi, AddCollaboratorApi, CreateBeneficiaryApi };

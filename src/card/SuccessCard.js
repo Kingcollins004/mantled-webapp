@@ -4,7 +4,7 @@ import "../App.css";
 import confetti from "../assets/svg/confetti-popper.svg";
 import Beneficiary from "./Beneficiary";
 
-const SuccessCard = (props) => {
+const SuccessCard = ({text}) => {
   const [displayModal, setDisplayModal] = useState(true);
 
   const handleSubmit = () => {
@@ -24,7 +24,7 @@ const SuccessCard = (props) => {
               <Image marginTop="5%" width="170px" src={confetti} />
               <Box marginTop="5%">
                 <Text textAlign="center">
-                  {props.text}
+                  {text}
                 </Text>
               </Box>
               <Box
