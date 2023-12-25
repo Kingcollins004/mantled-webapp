@@ -10,7 +10,7 @@ import {
   ModalOverlay,
   ModalBody,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import dummyImg from "../assets/png/dummyImg.png";
 import Av1 from "../assets/png/avatar1.jpg";
 import Av2 from "../assets/png/avatar2.jpg";
@@ -19,41 +19,20 @@ import Arrow from "../assets/svg/arrowIcon.svg";
 import { useDisclosure } from "@chakra-ui/react";
 import AddCollab from "../card/AddCollab";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import useDataFetch from "../hooks/dashboard";
 
 const getCollab =
   "https://sentinel-production.up.railway.app/api/v1/assets/invite";
 
-  
 const CollabModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
-  const [pendingCollab, setPendingCollab] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const userData = useSelector((state) => state.user);
+  const { acceptedCollaborators, pendingCollaborators } = useSelector(
+    (state) => state.asset
+  );
+  const { loading } = useDataFetch();
 
-  useEffect(() => {
-    const getInvite = async () => {
-      try {
-        const response = await axios.get(getCollab, {
-          headers: {
-            Authorization: `Bearer ${userData.token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const fetchedInvites = response.data.data.assets;
-        setPendingCollab(fetchedInvites);
-        console.log(response);
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getInvite();
-  }, []);
-
-  if (isLoading) {
+  if (loading) {
     return <p>Loading...</p>;
   }
 
@@ -101,95 +80,99 @@ const CollabModal = () => {
             </ModalContent>
           </Modal>
         </Flex>
-        <Box>
-          <Text marginBottom="3%" fontSize="12px" color="#8B8B8B">
-            PENDING COLLABORATORS
-          </Text>
-          <Flex marginBottom="2%">
-            <Image src={dummyImg} />
-            <Box paddingTop="1%">
-              <Text color="#000000" fontSize="12px" fontWeight="semibold">
-                Olurotimi Ajao
-              </Text>
-              <Text fontSize="12px" color="#8B8B8B">
-                Created 3rd Jan,2022
-              </Text>
-            </Box>
-            <Spacer />
-            <Button
-              backgroundColor="#DBF0DE"
-              height="29px"
-              color="#177937"
-              fontSize="12px"
-            >
-              Resend Invite
-            </Button>
-          </Flex>
-          <Flex marginBottom="2%">
-            <Image src={dummyImg} />
-            <Box paddingTop="1%">
-              <Text color="#000000" fontSize="12px" fontWeight="semibold">
-                Cynthia Morgan
-              </Text>
-              <Text fontSize="12px" color="#8B8B8B">
-                Created 3rd Jan,2022
-              </Text>
-            </Box>
-            <Spacer />
-            <Button
-              backgroundColor="#DBF0DE"
-              color="#177937"
-              height="29px"
-              fontSize="12px"
-            >
-              Resend Invite
-            </Button>
-          </Flex>
-        </Box>
-        <Box>
-          <Text marginBottom="3%" fontSize="12px" color="#8B8B8B">
-            ADDED COLLABORATORS
-          </Text>
-          <Flex marginLeft="1%" marginBottom="4%">
-            <Image width={{ base: "14%", md: "8%" }} src={Av1} />
-            <Box marginLeft="1%" paddingTop="1%">
-              <Text color="#000000" fontSize="12px" fontWeight="semibold">
-                Tomiloluwa Ayayi
-              </Text>
-              <Text fontSize="12px" color="#8B8B8B">
-                Created 3rd Jan,2022
-              </Text>
-            </Box>
-            <Spacer />
-            <Image src={Arrow} />
-          </Flex>
-          <Flex marginLeft="1%" marginBottom="4%">
-            <Image width={{ base: "14%", md: "8%" }} src={Av2} />
-            <Box marginLeft="1%" paddingTop="1%">
-              <Text color="#000000" fontSize="12px" fontWeight="semibold">
-                Destiny Etiko
-              </Text>
-              <Text fontSize="12px" color="#8B8B8B">
-                Created 3rd Jan,2022
-              </Text>
-            </Box>
-            <Spacer />
-            <Image src={Arrow} />
-          </Flex>
-          <Flex marginLeft="1%" marginBottom="4 %">
-            <Image width={{ base: "14%", md: "8%" }} src={Av3} />
-            <Box marginLeft="1%">
-              <Text color="#000000" fontSize="12px" fontWeight="semibold">
-                Philips Oluwatoyin
-              </Text>
-              <Text fontSize="12px" color="#8B8B8B">
-                Created 3rd Jan,2022
-              </Text>
-            </Box>
-            <Spacer />
-            <Image src={Arrow} />
-          </Flex>
-        </Box>
+        {pendingCollaborators?.length > 0 && (
+          <Box>
+            <Text marginBottom="3%" fontSize="12px" color="#8B8B8B">
+              PENDING COLLABORATORS
+            </Text>
+            <Flex marginBottom="2%">
+              <Image src={dummyImg} />
+              <Box paddingTop="1%">
+                <Text color="#000000" fontSize="12px" fontWeight="semibold">
+                  Olurotimi Ajao
+                </Text>
+                <Text fontSize="12px" color="#8B8B8B">
+                  Created 3rd Jan,2022
+                </Text>
+              </Box>
+              <Spacer />
+              <Button
+                backgroundColor="#DBF0DE"
+                height="29px"
+                color="#177937"
+                fontSize="12px"
+              >
+                Resend Invite
+              </Button>
+            </Flex>
+            <Flex marginBottom="2%">
+              <Image src={dummyImg} />
+              <Box paddingTop="1%">
+                <Text color="#000000" fontSize="12px" fontWeight="semibold">
+                  Cynthia Morgan
+                </Text>
+                <Text fontSize="12px" color="#8B8B8B">
+                  Created 3rd Jan,2022
+                </Text>
+              </Box>
+              <Spacer />
+              <Button
+                backgroundColor="#DBF0DE"
+                color="#177937"
+                height="29px"
+                fontSize="12px"
+              >
+                Resend Invite
+              </Button>
+            </Flex>
+          </Box>
+        )}
+        {acceptedCollaborators?.length > 0 && (
+          <Box>
+            <Text marginBottom="3%" fontSize="12px" color="#8B8B8B">
+              ADDED COLLABORATORS
+            </Text>
+            <Flex marginLeft="1%" marginBottom="4%">
+              <Image width={{ base: "14%", md: "8%" }} src={Av1} />
+              <Box marginLeft="1%" paddingTop="1%">
+                <Text color="#000000" fontSize="12px" fontWeight="semibold">
+                  Tomiloluwa Ayayi
+                </Text>
+                <Text fontSize="12px" color="#8B8B8B">
+                  Created 3rd Jan,2022
+                </Text>
+              </Box>
+              <Spacer />
+              <Image src={Arrow} />
+            </Flex>
+            <Flex marginLeft="1%" marginBottom="4%">
+              <Image width={{ base: "14%", md: "8%" }} src={Av2} />
+              <Box marginLeft="1%" paddingTop="1%">
+                <Text color="#000000" fontSize="12px" fontWeight="semibold">
+                  Destiny Etiko
+                </Text>
+                <Text fontSize="12px" color="#8B8B8B">
+                  Created 3rd Jan,2022
+                </Text>
+              </Box>
+              <Spacer />
+              <Image src={Arrow} />
+            </Flex>
+            <Flex marginLeft="1%" marginBottom="4 %">
+              <Image width={{ base: "14%", md: "8%" }} src={Av3} />
+              <Box marginLeft="1%">
+                <Text color="#000000" fontSize="12px" fontWeight="semibold">
+                  Philips Oluwatoyin
+                </Text>
+                <Text fontSize="12px" color="#8B8B8B">
+                  Created 3rd Jan,2022
+                </Text>
+              </Box>
+              <Spacer />
+              <Image src={Arrow} />
+            </Flex>
+          </Box>
+        )}
       </Box>
     </div>
   );

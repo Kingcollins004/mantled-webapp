@@ -10,7 +10,9 @@ import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
-  const userData = useSelector((state) => state.user);
+  const { acceptedCollaborators, pendingCollaborators } = useSelector(
+    (state) => state.asset
+  );
   return (
     <div>
       <Flex width="100%" height="100vh" backgroundColor="#FCFCFC">
@@ -199,7 +201,7 @@ const Dashboard = () => {
                 </Flex>
                 <Flex>
                   <Text fontSize="44px" color="#121936">
-                    98
+                   {acceptedCollaborators?.length + pendingCollaborators?.length}
                   </Text>
                   <Text
                     fontSize="14px"
@@ -230,7 +232,7 @@ const Dashboard = () => {
                 </Flex>
                 <Flex>
                   <Text fontSize="44px" color="#121936">
-                    25
+                    {acceptedCollaborators?.length}
                   </Text>
                   <Text
                     fontSize="14px"
@@ -261,7 +263,7 @@ const Dashboard = () => {
                 </Flex>
                 <Flex>
                   <Text fontSize="44px" color="#121936">
-                    11
+                    {pendingCollaborators?.length}
                   </Text>
                   <Text
                     fontSize="14px"
